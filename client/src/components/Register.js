@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 import {
 	Button,
@@ -9,7 +10,40 @@ import {
 	Container,
 } from "@mui/material";
 
+//TODO: FORM VALIDATION!
 const Register = () => {
+	const navigate = useNavigate();
+	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const submitRegister = (e) => {
+		e.preventDefault();
+
+		const newUser = {
+			email: email,
+			password: password,
+			username: username,
+		};
+		//Post request to backend "/api/user/register"
+		fetch("/api/user/register", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(newUser),
+			mode: "cors",
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				//Successful registration -> redirect and set states to ""
+				if (data.success === true) {
+					setUsername("");
+					setEmail("");
+					setPassword("");
+					navigate("/login");
+				}
+			});
+	};
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<Box
@@ -21,16 +55,18 @@ const Register = () => {
 				}}
 			>
 				<Typography variant="h5">Register</Typography>
-				<Box component="form" sx={{ mt: 3 }}>
+				<Box component="form" sx={{ mt: 3 }} onSubmit={submitRegister}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
-								name="userName"
+								name="username"
 								required
 								fullWidth
-								id="userName"
+								id="username"
 								label="Username"
 								autoFocus
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -40,6 +76,8 @@ const Register = () => {
 								id="email"
 								label="Email Address"
 								name="email"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -50,7 +88,8 @@ const Register = () => {
 								label="Password"
 								type="password"
 								id="password"
-								autoComplete="new-password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</Grid>
 					</Grid>

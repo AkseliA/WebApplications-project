@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { NavLink } from "react-router-dom";
 import { Typography } from "@mui/material";
+import authUtils from "../auth/authUtils";
 
 const Header = () => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static">
 				<Toolbar>
-					<NavLink to="/" activeClassName="current">
+					<NavLink to="/" activeClassName="active">
 						Home
 					</NavLink>
 
@@ -21,12 +22,16 @@ const Header = () => {
 					>
 						TEKSTIÄ
 					</Typography>
-					<NavLink to="/register" activeClassName="current">
+
+					<NavLink to="/register" activeClassName="active">
 						Register
 					</NavLink>
-
-					<NavLink to="/login" activeClassName="current">
+					<NavLink to="/login" activeClassName="active">
 						Login
+					</NavLink>
+
+					<NavLink to="/" onClick={authUtils.logOut}>
+						Logout
 					</NavLink>
 				</Toolbar>
 			</AppBar>
