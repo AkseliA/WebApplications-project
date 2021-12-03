@@ -60,4 +60,12 @@ router.delete("/deleteSingle", (req, res, next) => {
 	});
 });
 
+router.post("/edit/:id", (req, res, next) => {
+	const commentId = req.params.id;
+	const editedComment = new Comment({
+		_id: commentId,
+		content: req.body.content,
+	});
+});
+
 module.exports = router;
