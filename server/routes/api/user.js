@@ -5,6 +5,7 @@ const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const formValidate = require("../../auth/formValidate");
 const bcrypt = require("bcryptjs");
+const passport = require("passport");
 
 /* Register new user POST request */
 //TODO USERNAME validate
@@ -46,13 +47,12 @@ router.post(
 				bcrypt.genSalt(10, (err, salt) => {
 					bcrypt.hash(req.body.password, salt, (err, hash) => {
 						if (err) throw err;
-						let currentDate = new Date(Date.now());
 						User.create(
 							{
 								email: req.body.email,
 								password: hash,
 								username: req.body.username,
-								registerDate: currentDate,
+								registerDate: req.body.date,
 							},
 							(err, result) => {
 								if (err) throw err;
@@ -128,16 +128,24 @@ router.post(
 );
 
 //GET user information
-//TODO: passport?
-router.get("/profile", (req, res, next) => {
-	let userEmail = req.body.email;
-	User.fetchUserByEmail(userEmail, (err, user) => {
-		if (err) throw err;
-		if (user) {
-			return res.json({ success: true, user });
-		} else {
-			return res.json({ success: false, msg: "Could not fetch user" });
-		}
-	});
-});
+//This route can be accessed only when logged in
+router.get(
+	"/profile",
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		let userEmail = req.user.email;
+
+		User.fetchUserByEmail(userEmail, (err, user) => {
+			if (err) throw err;
+			if (user) {
+				return res.json({ success: true, user });
+			} else {
+				return res.json({
+					success: false,
+					msg: "Could not fetch user",
+				});
+			}
+		});
+	}
+);
 module.exports = router;

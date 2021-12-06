@@ -5,6 +5,7 @@ const router = require("../routes/api/post");
 const postSchema = mongoose.Schema(
 	{
 		userId: { type: Object },
+		username: { type: String },
 		date: { type: Date },
 		editDate: { type: Date },
 		content: { type: String },
