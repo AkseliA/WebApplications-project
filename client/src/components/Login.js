@@ -15,7 +15,7 @@ const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	//Submit login and after succesful login stores jwt to localstorage
+	//Submit login and after succesful login stores jwt and user to localstorage
 	const submitLogin = (e) => {
 		e.preventDefault();
 
@@ -32,13 +32,15 @@ const Login = () => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				//Successful registration: setStates, save JWT and redirect
+				//Successful registration: setStates, save JWT and user and redirect
 				if (data.success === true) {
 					setEmail("");
 					setPassword("");
 					authUtils.setLocalStorage(data.token);
-					authUtils.isLoggedIn();
-					navigate("/");
+					authUtils.loadUser(() => {
+						//Redirects after loadUser fetch finished
+						navigate("/");
+					});
 				}
 			});
 	};

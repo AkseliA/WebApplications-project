@@ -24,6 +24,7 @@ const Register = () => {
 			email: email,
 			password: password,
 			username: username,
+			date: new Date(Date.now()),
 		};
 		//Post request to backend "/api/user/register"
 		fetch("/api/user/register", {

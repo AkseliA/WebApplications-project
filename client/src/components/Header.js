@@ -23,7 +23,6 @@ const Header = () => {
 	//loggedIn is used for conditional rendering
 	useEffect(() => {
 		setLoggedIn(authUtils.isLoggedIn());
-		console.log("LoggedIn status:", loggedIn);
 	}, [location.pathname]);
 
 	const handleMenu = (event) => {

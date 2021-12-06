@@ -16,25 +16,12 @@ import testImage from "./testimage.png";
 const Profile = () => {
 	const [user, setUser] = useState("");
 
-	//useEffect for fetching profile from "/api/user/profile"
+	//useEffect for getting the current profile
 	useEffect(() => {
-		let jwt = authUtils.getLocalStorage();
-		fetch("/api/user/profile", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${jwt}`,
-			},
-			mode: "cors",
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				if (data.success === true) {
-					setUser(data.user);
-				}
-			});
+		setUser(authUtils.getCurrentUser());
 	}, []);
 
+	//TODO: WHEN PROFILE IS EDITED REMEMBER TO UPDATE LOCALSTORAGE
 	return (
 		<Container component="main" maxWidth="sm">
 			<CssBaseline />
