@@ -1,5 +1,7 @@
 .App {
 	text-align: center;
+	height: 100vh;
+	background-color: #e3f2fd;
 }
 
 .App-logo {
@@ -42,11 +44,13 @@
 }
 
 a {
-	color: white;
+	color: rgb(0, 0, 0);
 	text-decoration: none;
-	font-weight: bold;
 	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 	margin-left: 10px;
 	margin-right: 10px;
-	font-size: larger;
+}
+#homeHeader {
+	color: white;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }

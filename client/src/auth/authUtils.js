@@ -1,6 +1,9 @@
 module.exports.setLocalStorage = function (token) {
 	localStorage.setItem("JWT", token);
 };
+module.exports.getLocalStorage = function (token) {
+	return localStorage.getItem("JWT", token);
+};
 
 module.exports.logOut = function () {
 	localStorage.clear();
