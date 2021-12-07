@@ -12,16 +12,26 @@ import {
 } from "@mui/material";
 import authUtils from "../auth/authUtils";
 import testImage from "./testimage.png";
+import EditProfile from "./EditProfile";
+import DisplayProfile from "./DisplayProfile";
 
 const Profile = () => {
 	const [user, setUser] = useState("");
+	const [editMode, setEditMode] = useState(true);
 
 	//useEffect for getting the current profile
 	useEffect(() => {
+		console.log("loaded");
 		setUser(authUtils.getCurrentUser());
 	}, []);
 
+	const handleChange = () => {
+		setEditMode(editMode ? false : true);
+	};
+
 	//TODO: WHEN PROFILE IS EDITED REMEMBER TO UPDATE LOCALSTORAGE
+	//By default this component displays user profile. When edit button is clicked
+	//a component is loaded so that editing is possible
 	return (
 		<Container component="main" maxWidth="sm">
 			<CssBaseline />
@@ -36,53 +46,41 @@ const Profile = () => {
 				}}
 			>
 				<Typography variant="h4" color="white" sx={{ mt: 1 }}>
-					Edit profile
+					{editMode ? "My profile" : "Edit profile"}
 				</Typography>
 
-				<Avatar
-					id="profilePicture"
-					src={testImage}
-					sx={{
-						width: 150,
-						height: 150,
-						borderRadius: "50%",
-						display: "inline",
-						m: 1,
-					}}
-				></Avatar>
+				{user.avatar && (
+					<Avatar
+						id="profilePicture"
+						src="http://localhost:1234/api/user/avatar/61afa7ab22e8f70d64b5c735"
+						sx={{
+							width: 150,
+							height: 150,
+							borderRadius: "50%",
+							display: "inline",
+							m: 1,
+						}}
+					></Avatar>
+				)}
 				<CardContent>
+					{editMode ? (
+						<DisplayProfile user={user} />
+					) : (
+						<EditProfile user={user} />
+					)}
+					<Button
+						fullWidth
+						variant="contained"
+						sx={{ mt: 3, mb: 2 }}
+						onClick={handleChange}
+					>
+						{editMode
+							? "Click to edit profile"
+							: "Return to profile"}
+					</Button>
 					<Typography variant="body2" color="white">
-						*** BIOGRAPHY ***
+						This account was created {user.registerDate}
 					</Typography>
-					<Box component="form" sx={{ mt: 3, width: "100%" }}>
-						<TextField
-							name="content"
-							label="content"
-							fullWidth
-							multiline
-							type="text"
-							id="content"
-							color="secondary"
-							sx={{ mb: 2 }}
-						/>
-						<TextField
-							name="content"
-							label="content"
-							fullWidth
-							multiline
-							type="text"
-							id="content"
-							sx={{ mb: 2 }}
-						/>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							sx={{ mt: 3, mb: 2 }}
-						>
-							Submit
-						</Button>
-					</Box>
 				</CardContent>
 			</Card>
 		</Container>

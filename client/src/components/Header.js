@@ -78,7 +78,7 @@ const Header = () => {
 								onClose={handleClose}
 							>
 								<MenuItem onClick={handleClose}>
-									<Link to="/profile">Edit profile</Link>
+									<Link to="/profile">My profile</Link>
 								</MenuItem>
 								<MenuItem onClick={handleClose}>
 									<Link

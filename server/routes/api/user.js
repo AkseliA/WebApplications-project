@@ -1,11 +1,15 @@
 var express = require("express");
 var router = express.Router();
 var User = require("../../models/user");
+var Avatar = require("../../models/avatar");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const formValidate = require("../../auth/formValidate");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 /* Register new user POST request */
 //TODO USERNAME validate
@@ -148,4 +152,57 @@ router.get(
 		});
 	}
 );
+
+//passport protected POST request used to update current user
+//Uses multer for image handling: https://github.com/expressjs/multer
+router.post(
+	"/edit",
+	passport.authenticate("jwt", { session: false }),
+	upload.single("avatar"),
+	(req, res, next) => {
+		//First upload avatar to avatars collection.
+		//New avatar _id is linked to users' db "avatar" field
+		let newAvatar = new Avatar({
+			buffer: req.file.buffer,
+			mimetype: req.file.mimetype,
+			name: req.file.originalname,
+			encoding: req.file.encoding,
+		});
+		Avatar.addNewAvatar(newAvatar, (err) => {
+			if (err) throw err;
+		});
+
+		//Then the user is updated
+		let updatedUser = new User({
+			_id: req.user._id,
+			bio: req.body.bio,
+			avatar: newAvatar._id,
+		});
+		User.updateUser(updatedUser, (err, result) => {
+			if (result) {
+				return res.json({ success: true, result });
+			} else {
+				return res.json({ success: false, msg: "Failed to edit user" });
+			}
+		});
+	}
+);
+
+//Get avatar image using the _imageID as req parameter :id
+router.get("/avatar/:id", (req, res) => {
+	let avatarId = req.params.id;
+	console.log(avatarId);
+	Avatar.getAvatar(avatarId, (err, avatar) => {
+		if (err) throw err;
+		if (!avatar) {
+			return res.json({ success: false, msg: "Could not fetch image" });
+		} else {
+			//Set res headers for sending an image
+			res.setHeader("Content-Type", avatar.mimetype);
+			res.setHeader("Content-Encoding", "7bit");
+			res.setHeader("Content-Disposition", "inline");
+			return res.send(avatar.buffer);
+		}
+	});
+});
 module.exports = router;
