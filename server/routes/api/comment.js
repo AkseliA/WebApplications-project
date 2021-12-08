@@ -9,7 +9,7 @@ const bcrypt = require("bcryptjs");
 router.post("/add", (req, res, next) => {
 	let currentDate = new Date(Date.now());
 	let newComment = new Comment({
-		userId: req.body.userId,
+		user: req.body.user,
 		postId: req.body.postId,
 		date: currentDate,
 		content: req.body.content,
@@ -24,12 +24,12 @@ router.post("/add", (req, res, next) => {
 });
 
 /* GET request for fetching all comments of a post */
-router.get("/fetch", (req, res, next) => {
-	let postId = req.body.postId;
+router.get("/fetch/:id", (req, res, next) => {
+	let postId = req.params.postId;
 	Comment.fetchPostComments(postId, (err, comments) => {
 		if (err) throw err;
 		if (comments) {
-			return res.json({ success: false, comments });
+			return res.json({ success: true, comments });
 		} else {
 			return res.json({
 				success: false,
@@ -40,7 +40,7 @@ router.get("/fetch", (req, res, next) => {
 });
 
 router.delete("/deleteAll", (req, res, next) => {
-	Comment.deletePostComments(postId, (err, result) => {
+	Comment.deletePostComments(req.body.postId, (err, result) => {
 		if (err) {
 			return res.json({ success: false, msg: err });
 		} else if (result) {

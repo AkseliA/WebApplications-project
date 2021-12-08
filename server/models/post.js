@@ -4,8 +4,7 @@ const router = require("../routes/api/post");
 //TODO: Required fields?
 const postSchema = mongoose.Schema(
 	{
-		userId: { type: Object },
-		username: { type: String },
+		user: { type: Object },
 		date: { type: Date },
 		editDate: { type: Date },
 		title: { type: String },

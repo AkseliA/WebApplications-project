@@ -14,8 +14,7 @@ router.post(
 	passport.authenticate("jwt", { session: false }),
 	(req, res, next) => {
 		let newPost = new Post({
-			userId: req.user._id,
-			username: req.body.username,
+			user: req.body.user,
 			date: req.body.date,
 			title: req.body.title,
 			content: req.body.content,
@@ -34,7 +33,9 @@ router.post(
 // GET request for fetching all posts
 router.get("/fetch", (req, res, next) => {
 	Post.fetchAllPosts((err, posts) => {
-		if (err) throw err;
+		if (err) {
+			return res.json({ success: false, err });
+		}
 
 		if (posts) {
 			return res.json({ success: true, posts });
@@ -48,7 +49,9 @@ router.get("/fetch", (req, res, next) => {
 router.get("/fetch/:postId", (req, res, next) => {
 	let postId = req.params.postId;
 	Post.fetchSinglePost(postId, (err, post) => {
-		if (err) throw err;
+		if (err) {
+			return res.json({ success: false, err });
+		}
 
 		if (post) {
 			return res.json({ success: true, post });

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 //TODO: Required fields?
 const commentSchema = mongoose.Schema(
 	{
-		userId: { type: Object },
+		user: { type: Object },
 		postId: { type: Object },
 		date: { type: Date },
 		editDate: { type: Date },
