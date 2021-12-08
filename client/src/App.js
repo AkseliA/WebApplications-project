@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
+import PostWithComments from "./components/PostWithComments";
 
 function App() {
 	return (
@@ -29,7 +30,10 @@ function App() {
 						path="/profile"
 						element={<Profile />}
 					></Route>
-
+					<Route
+						path="/post/:id"
+						element={<PostWithComments />}
+					></Route>
 					<Route
 						path="*"
 						exact={true}

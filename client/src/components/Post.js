@@ -6,6 +6,7 @@ import {
 	Typography,
 	CssBaseline,
 	IconButton,
+	Avatar,
 } from "@mui/material";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -47,8 +48,18 @@ const Post = ({ post, user }) => {
 						bgcolor: "gray", //TODO color
 					}}
 				>
+					{user.avatar && (
+						<Avatar
+							alt="user"
+							src={"/api/user/avatar/" + user.avatar}
+							sx={{
+								width: 24,
+								height: 24,
+							}}
+						/>
+					)}
 					<Typography variant="h5">{post.title}</Typography>
-					{user._id === post.userId && (
+					{user._id === post.user._id && (
 						<IconButton
 							onClick={handleMenu}
 							color="inherit"
@@ -100,7 +111,7 @@ const Post = ({ post, user }) => {
 						display="block"
 						align="left"
 					>
-						Posted by: {post.username}
+						Posted by: {post.user.username}
 					</Typography>
 					<Typography variant="caption" display="block" align="left">
 						Date: {post.date}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "@mui/material";
 import authUtils from "../auth/authUtils";
+import postUtils from "../auth/postUtils";
 import PostInput from "./PostInput";
 import Post from "./Post";
 //TODO: FORM VALIDATION!
@@ -21,13 +22,11 @@ const Home = () => {
 		setLoggedIn(authUtils.isLoggedIn());
 		setUser(authUtils.getCurrentUser());
 
-		fetch("/api/post/fetch")
-			.then((response) => response.json())
-			.then((data) => {
-				if (data.success) {
-					setPosts(data.posts.reverse());
-				}
-			});
+		postUtils.fetchPosts((result) => {
+			if (result.success) {
+				setPosts(result.posts.reverse());
+			}
+		});
 	}, []);
 
 	//Display postInput component if logged in

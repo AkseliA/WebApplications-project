@@ -1,31 +1,25 @@
 import React, { useState } from "react";
 import { Button, TextField, Box, Typography, CssBaseline } from "@mui/material";
-import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";
 
-const PostInput = ({ user }) => {
-	const [title, setTitle] = useState("");
+const CommentInput = ({ user, postId }) => {
 	const [content, setContent] = useState("");
 
 	// POST request to server
-	const submitPost = (e) => {
+	const submitComment = (e) => {
 		e.preventDefault();
-
-		let jwt = authUtils.getCurrentJWT();
-
-		const newPost = {
+		let newComment = {
 			user: user,
-			title: title,
+			postId: postId,
 			content: content,
-			date: new Date(Date.now()),
 		};
-		postUtils.addPost(newPost, (res) => {
+		postUtils.addComment(newComment, (res) => {
 			if (res.success) {
-				window.location.href = "/";
+				console.log(res);
+				window.location.reload();
 			}
 		});
 
-		setTitle("");
 		setContent("");
 	};
 	return (
@@ -41,32 +35,18 @@ const PostInput = ({ user }) => {
 					border: "1px solid gray",
 				}}
 			>
-				<Typography variant="h6" sx={{ mt: 3 }}>
-					New post
-				</Typography>
 				<Box
 					component="form"
 					sx={{ mt: 3, width: "100%", px: 2 }}
-					onSubmit={submitPost}
+					onSubmit={submitComment}
 				>
 					<TextField
-						name="title"
-						label="Title"
-						fullWidth
-						required
-						type="text"
-						id="content"
-						value={title}
-						sx={{ mb: 2 }}
-						onChange={(e) => setTitle(e.target.value)}
-					/>
-					<TextField
 						name="content"
-						label="Content"
+						label="Add a comment"
 						fullWidth
 						multiline
 						required
-						rows={5}
+						rows={2}
 						type="text"
 						id="content"
 						value={content}
@@ -87,4 +67,4 @@ const PostInput = ({ user }) => {
 	);
 };
 
-export default PostInput;
+export default CommentInput;
