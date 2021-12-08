@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
 	Button,
-	Box,
 	Card,
 	CardContent,
 	Avatar,
 	Typography,
-	TextField,
 	Container,
 	CssBaseline,
 } from "@mui/material";
 import authUtils from "../auth/authUtils";
-import testImage from "./testimage.png";
 import EditProfile from "./EditProfile";
 import DisplayProfile from "./DisplayProfile";
 
@@ -52,7 +49,7 @@ const Profile = () => {
 				{user.avatar && (
 					<Avatar
 						id="profilePicture"
-						src="http://localhost:1234/api/user/avatar/61afa7ab22e8f70d64b5c735"
+						src={"/api/user/avatar/" + user.avatar}
 						sx={{
 							width: 150,
 							height: 150,

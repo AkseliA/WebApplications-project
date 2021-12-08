@@ -3,17 +3,18 @@ import { Button, TextField, Box, Typography, CssBaseline } from "@mui/material";
 import authUtils from "../auth/authUtils";
 
 const PostInput = ({ user }) => {
+	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 
 	// POST request to server
 	const submitPost = (e) => {
 		e.preventDefault();
-		console.log(user);
 
 		let jwt = authUtils.getCurrentJWT();
 
 		const newPost = {
 			username: user.username,
+			title: title,
 			content: content,
 			date: new Date(Date.now()),
 		};
@@ -28,8 +29,11 @@ const PostInput = ({ user }) => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
+				if (data.success) {
+					window.location.href = "/";
+				}
 			});
+		setTitle("");
 		setContent("");
 	};
 	return (
@@ -38,7 +42,7 @@ const PostInput = ({ user }) => {
 
 			<Box
 				sx={{
-					marginTop: 8,
+					mb: 8,
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
@@ -54,10 +58,22 @@ const PostInput = ({ user }) => {
 					onSubmit={submitPost}
 				>
 					<TextField
+						name="title"
+						label="Title"
+						fullWidth
+						required
+						type="text"
+						id="content"
+						value={title}
+						sx={{ mb: 2 }}
+						onChange={(e) => setTitle(e.target.value)}
+					/>
+					<TextField
 						name="content"
-						label="content"
+						label="Content"
 						fullWidth
 						multiline
+						required
 						rows={5}
 						type="text"
 						id="content"

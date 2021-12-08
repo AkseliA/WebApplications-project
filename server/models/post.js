@@ -8,6 +8,7 @@ const postSchema = mongoose.Schema(
 		username: { type: String },
 		date: { type: Date },
 		editDate: { type: Date },
+		title: { type: String },
 		content: { type: String },
 	},
 	{ collection: "posts" }
@@ -35,7 +36,7 @@ module.exports.editPost = function (post, callback) {
 	let postId = post._id;
 	let update = { editDate: post.editDate, content: post.content };
 
-	Post.findByIdAndUpdate(filter, update, (err, result) => {
+	Post.findByIdAndUpdate(postId, update, (err, result) => {
 		if (err) throw err;
 		callback(null, result);
 	});

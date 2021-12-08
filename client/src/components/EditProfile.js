@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import { Button, Box, TextField, Input } from "@mui/material";
 import authUtils from "../auth/authUtils";
 
 const EditProfile = ({ user }) => {
 	const [newBio, setNewBio] = useState("");
 	const [newPfp, setNewPfp] = useState("");
-	const navigate = useNavigate();
 
 	const submitEdit = (e) => {
 		e.preventDefault();
@@ -34,7 +32,7 @@ const EditProfile = ({ user }) => {
 					setNewPfp("");
 					localStorage.removeItem("user");
 					authUtils.loadUser(() => {
-						navigate("/profile");
+						window.location.href = "/profile";
 					});
 				}
 			});

@@ -122,3 +122,4 @@ dist
 
 #misc.
 .dir-locals.el
+client/src/components/testimage.png

@@ -17,6 +17,7 @@ router.post(
 			userId: req.user._id,
 			username: req.body.username,
 			date: req.body.date,
+			title: req.body.title,
 			content: req.body.content,
 		});
 
