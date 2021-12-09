@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, TextField, Box, Typography, CssBaseline } from "@mui/material";
-import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";
 
+//TODO: Titlen pituus limit
 const PostInput = ({ user }) => {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
@@ -10,8 +10,6 @@ const PostInput = ({ user }) => {
 	// POST request to server
 	const submitPost = (e) => {
 		e.preventDefault();
-
-		let jwt = authUtils.getCurrentJWT();
 
 		const newPost = {
 			user: user,

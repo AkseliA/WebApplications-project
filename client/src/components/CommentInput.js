@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, TextField, Box, Typography, CssBaseline } from "@mui/material";
+import { Button, TextField, Box, CssBaseline } from "@mui/material";
 import postUtils from "../auth/postUtils";
 
 const CommentInput = ({ user, postId }) => {

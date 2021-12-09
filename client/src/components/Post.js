@@ -3,11 +3,13 @@ import {
 	Menu,
 	MenuItem,
 	Box,
+	Grid,
 	Typography,
 	CssBaseline,
 	IconButton,
 	Avatar,
 } from "@mui/material";
+import postUtils from "../auth/postUtils";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
@@ -22,6 +24,22 @@ const Post = ({ post, user }) => {
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const deletePost = () => {
+		//close menu
+		setAnchorEl(null);
+
+		postUtils.deletePost(post._id, (res) => {
+			//After successful delete -> redirect
+			if (res.success) {
+				if (window.location.href === "/") {
+					window.location.reload();
+				} else {
+					window.location.href = "/";
+				}
+			}
+		});
 	};
 
 	return (
@@ -48,16 +66,6 @@ const Post = ({ post, user }) => {
 						bgcolor: "gray", //TODO color
 					}}
 				>
-					{user.avatar && (
-						<Avatar
-							alt="user"
-							src={"/api/user/avatar/" + user.avatar}
-							sx={{
-								width: 24,
-								height: 24,
-							}}
-						/>
-					)}
 					<Typography variant="h5">{post.title}</Typography>
 					{user._id === post.user._id && (
 						<IconButton
@@ -89,48 +97,77 @@ const Post = ({ post, user }) => {
 						onClose={handleClose}
 					>
 						<MenuItem onClick={handleClose}>Edit</MenuItem>
-						<MenuItem onClick={handleClose}>Delete</MenuItem>
+						<MenuItem onClick={deletePost}>Delete</MenuItem>
 					</Menu>
 				</Box>
 				<Box component="div" sx={{ my: 2, width: "100%", px: 2 }}>
 					<Typography variant="body1">{post.content}</Typography>
 				</Box>
-				<Box
-					component="div"
-					sx={{
-						py: 1,
-						px: 1,
-						width: "100%",
-						borderBottom: "1px solid gray",
-						bgcolor: "gray", //TODO color
-					}}
+
+				<Grid
+					container
+					sx={{ bgcolor: "green", m: 0, p: 0, width: "100%" }}
 				>
-					<Typography
-						variant="caption"
-						noWrap
-						display="block"
-						align="left"
-					>
-						Posted by: {post.user.username}
-					</Typography>
-					<Typography variant="caption" display="block" align="left">
-						Date: {post.date}
-					</Typography>
-					{post.editDate && (
-						<Typography
-							variant="caption"
-							sx={{
-								position: "absolute",
-								bottom: 0,
-								right: 0,
-								pb: 1.2,
-								pr: 1,
-							}}
+					<Grid item xs sx={{ p: 1 }} container>
+						<Grid
+							item
+							xs
+							container
+							direction="column"
+							alignItems="flex-start"
 						>
-							Last edited: {post.editDate}
-						</Typography>
-					)}
-				</Box>
+							<Grid item xs>
+								<Grid
+									item
+									xs
+									container
+									direction="row"
+									alignItems="flex-start"
+								>
+									<Grid item xs>
+										<Avatar
+											alt={post.user.username.toUpperCase()}
+											src={
+												"/api/user/avatar/" +
+												post.user.avatar
+											}
+											sx={{ width: 24, height: 24 }}
+										/>
+									</Grid>
+									<Grid item xs>
+										<Typography
+											variant="body"
+											sx={{ pl: 1 }}
+										>
+											{post.user.username}
+										</Typography>
+									</Grid>
+								</Grid>
+							</Grid>
+							<Grid item xs>
+								<Typography variant="caption">
+									Posted: {post.date}
+								</Typography>
+							</Grid>
+						</Grid>
+						<Grid
+							item
+							xs
+							container
+							direction="column"
+							alignItems="flex-end"
+						>
+							<Grid item xs></Grid>
+							<Grid item xs>
+								{post.editDate && (
+									<Typography variant="caption">
+										Last edited: {post.editDate}
+									</Typography>
+								)}
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
 			</Box>
 		</>
 	);

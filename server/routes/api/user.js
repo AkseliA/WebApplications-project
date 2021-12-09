@@ -193,7 +193,9 @@ router.get("/avatar/:id", (req, res) => {
 	let avatarId = req.params.id;
 	console.log(avatarId);
 	Avatar.getAvatar(avatarId, (err, avatar) => {
-		if (err) throw err;
+		if (err) {
+			return res.json({ success: false, err });
+		}
 		if (!avatar) {
 			return res.json({ success: false, msg: "Could not fetch image" });
 		} else {

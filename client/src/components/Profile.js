@@ -49,6 +49,7 @@ const Profile = () => {
 				{user.avatar && (
 					<Avatar
 						id="profilePicture"
+						alt={user.username.toUppercase()}
 						src={"/api/user/avatar/" + user.avatar}
 						sx={{
 							width: 150,

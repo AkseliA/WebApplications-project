@@ -10,7 +10,7 @@ import {
 	Container,
 } from "@mui/material";
 
-//TODO: FORM VALIDATION!
+//TODO: FORM VALIDATION, Titlen pituus limit
 const Register = () => {
 	const navigate = useNavigate();
 	const [username, setUsername] = useState("");

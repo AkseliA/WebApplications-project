@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-	Menu,
-	MenuItem,
 	Avatar,
 	Box,
 	Typography,
 	CssBaseline,
 	IconButton,
+	Grid,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import postUtils from "../auth/postUtils";
 
 const Comment = ({ user, comment }) => {
+	//TODO: Confirm dialogs?
 	const deleteComment = () => {
-		console.log("remove");
+		postUtils.deleteComment(comment._id, (res) => {
+			if (res.success) {
+				//redirect
+				window.location.reload();
+			}
+		});
 	};
 
 	const editComment = () => {
@@ -26,7 +32,7 @@ const Comment = ({ user, comment }) => {
 
 			<Box
 				sx={{
-					mb: 4,
+					mb: 1,
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
@@ -35,92 +41,126 @@ const Comment = ({ user, comment }) => {
 					bgcolor: "red", //TODO COLOR
 				}}
 			>
-				<Box
-					component="div"
-					sx={{
-						py: 1,
-						pl: 1,
-						width: "100%",
-						borderBottom: "1px solid gray",
-						bgcolor: "gray", //TODO color
-					}}
+				<Grid
+					container
+					sx={{ bgcolor: "green", m: 0, p: 0, width: "100%" }}
 				>
-					<Avatar
-						alt="user"
-						src={"/api/user/avatar/" + user.avatar}
-						sx={{ width: 24, height: 24 }}
-					/>
-					<Typography display="block" align="left">
-						{comment.user.username}:
-					</Typography>
-					{user._id === comment.user._id && (
-						<>
-							<IconButton
-								onClick={editComment}
-								color="inherit"
-								display="block"
-								aria-controls="edit-comment"
-								aria-label="edit"
-								sx={{
-									position: "absolute",
-									top: 0,
-									right: 25,
-									py: 1.25,
-									pr: 1,
-								}}
-							>
-								<EditIcon fontSize="small" />
-							</IconButton>
-							<IconButton
-								onClick={deleteComment}
-								color="inherit"
-								display="block"
-								aria-controls="del-comment"
-								aria-label="delete"
-								sx={{
-									position: "absolute",
-									top: 0,
-									right: 0,
-									py: 1.25,
-									pr: 1,
-								}}
-							>
-								<DeleteIcon fontSize="small" />
-							</IconButton>
-						</>
-					)}
-				</Box>
-				<Box component="div" sx={{ my: 2, width: "100%", px: 2 }}>
-					<Typography variant="body1">{comment.content}</Typography>
-				</Box>
-				<Box
-					component="div"
-					sx={{
-						py: 1,
-						px: 1,
-						width: "100%",
-						borderBottom: "1px solid gray",
-						bgcolor: "gray", //TODO color
-					}}
-				>
-					<Typography variant="caption" display="block" align="left">
-						Date: {comment.date}
-					</Typography>
-					{comment.editDate && (
-						<Typography
-							variant="caption"
-							sx={{
-								position: "absolute",
-								bottom: 0,
-								right: 0,
-								pb: 1.2,
-								pr: 1,
-							}}
+					<Grid item xs sx={{ p: 1 }} container>
+						<Grid
+							item
+							xs
+							container
+							direction="column"
+							alignItems="flex-start"
 						>
-							Last edited: {comment.editDate}
-						</Typography>
-					)}
+							<Grid item xs>
+								<Grid
+									item
+									xs
+									container
+									direction="row"
+									alignItems="flex-start"
+								>
+									<Grid item xs>
+										<Avatar
+											alt={comment.user.username.toUpperCase()}
+											src={
+												"/api/user/avatar/" +
+												comment.user.avatar
+											}
+											sx={{ width: 24, height: 24 }}
+										/>
+									</Grid>
+									<Grid item xs>
+										<Typography
+											variant="body"
+											sx={{ pl: 1 }}
+										>
+											{comment.user.username}
+										</Typography>
+									</Grid>
+								</Grid>
+							</Grid>
+						</Grid>
+						<Grid
+							item
+							xs
+							container
+							direction="column"
+							alignItems="flex-end"
+						>
+							<Grid item>
+								<Grid item xs container direction="row">
+									<Grid item xs>
+										<IconButton
+											onClick={editComment}
+											color="inherit"
+											display="block"
+											aria-controls="edit-comment"
+											aria-label="edit"
+											sx={{ p: 0 }}
+										>
+											<EditIcon fontSize="small" />
+										</IconButton>
+									</Grid>
+									<Grid item xs>
+										<IconButton
+											onClick={(e) => deleteComment(e)}
+											color="inherit"
+											display="block"
+											aria-controls="del-comment"
+											aria-label="delete"
+											sx={{ p: 0 }}
+										>
+											<DeleteIcon fontSize="small" />
+										</IconButton>
+									</Grid>
+								</Grid>
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
+
+				<Box sx={{ my: 2, width: "100%", px: 1 }}>
+					<Typography variant="body1" sx={{ textAlign: "left" }}>
+						{comment.content}
+					</Typography>
 				</Box>
+				<Grid
+					container
+					sx={{ bgcolor: "green", m: 0, p: 0, width: "100%" }}
+				>
+					<Grid item xs sx={{ p: 1 }} container>
+						<Grid
+							item
+							xs
+							container
+							direction="column"
+							alignItems="flex-start"
+						>
+							<Grid item xs>
+								<Typography variant="caption">
+									Posted : {comment.date}
+								</Typography>
+							</Grid>
+						</Grid>
+						<Grid
+							item
+							xs
+							container
+							direction="column"
+							alignItems="flex-end"
+						>
+							<Grid item xs>
+								{comment.editDate && (
+									<Typography variant="caption">
+										Last edited: {comment.editDate}
+									</Typography>
+								)}
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
 			</Box>
 		</>
 	);

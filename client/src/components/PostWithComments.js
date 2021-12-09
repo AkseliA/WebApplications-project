@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
-import { IconButton, Container } from "@mui/material";
+import { useParams } from "react-router";
+import { Container, List } from "@mui/material";
 import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";
 import Post from "./Post";
@@ -24,7 +24,6 @@ const PostWithComments = () => {
 		//Fetch post related comments
 		postUtils.fetchComments(params.id, (res) => {
 			if (res.success) {
-				console.log(res);
 				setComments(res.comments);
 			}
 		});
@@ -40,14 +39,16 @@ const PostWithComments = () => {
 			}}
 		>
 			{post && <Post post={post} user={user}></Post>}
-			{comments &&
-				comments.map((comment) => (
-					<Comment
-						key={comment._id}
-						comment={comment}
-						user={user}
-					></Comment>
-				))}
+			<List sx={{ width: "100%" }}>
+				{comments &&
+					comments.map((comment) => (
+						<Comment
+							key={comment._id}
+							comment={comment}
+							user={user}
+						></Comment>
+					))}
+			</List>
 			{user && post && (
 				<CommentInput user={user} post={post._id}></CommentInput>
 			)}

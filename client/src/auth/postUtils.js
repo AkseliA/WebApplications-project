@@ -21,7 +21,6 @@ module.exports.fetchComments = function (postId, callback) {
 	fetch("/api/comment/fetch/" + postId)
 		.then((response) => response.json())
 		.then((data) => {
-			console.log(data);
 			callback(data);
 		});
 };
@@ -68,4 +67,38 @@ module.exports.addPost = function (data, callback) {
 				callback(data);
 			});
 	}
+};
+
+//TODO check that user trying to delete has created the comment
+module.exports.deleteComment = function (commentId, callback) {
+	fetch("/api/comment/deleteSingle", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ _id: commentId }),
+		mode: "cors",
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			callback(data);
+		});
+};
+
+//TODO check that user trying to delete has created the post
+//This function deletes the post and all of its comments.
+//Both deletes are handled server side
+module.exports.deletePost = function (postId, callback) {
+	fetch("/api/post/del", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ _id: postId }),
+		mode: "cors",
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			callback(data);
+		});
 };
