@@ -35,7 +35,6 @@ const Profile = () => {
 
 			<Card
 				sx={{
-					marginTop: 8,
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
@@ -49,7 +48,7 @@ const Profile = () => {
 				{user.avatar && (
 					<Avatar
 						id="profilePicture"
-						alt={user.username.toUppercase()}
+						alt={user.username}
 						src={"/api/user/avatar/" + user.avatar}
 						sx={{
 							width: 150,

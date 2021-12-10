@@ -35,7 +35,7 @@ const Header = () => {
 
 	//TODO LOGIN / REGISTER LINKS
 	return (
-		<Box sx={{ flexGrow: 1 }}>
+		<Box sx={{ flexGrow: 1, mb: 8 }}>
 			<AppBar position="static">
 				<Toolbar>
 					<Typography

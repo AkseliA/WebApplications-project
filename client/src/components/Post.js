@@ -9,9 +9,11 @@ import {
 	IconButton,
 	Avatar,
 } from "@mui/material";
-import postUtils from "../auth/postUtils";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import postUtils from "../auth/postUtils";
 
 //TODO POST AVATAR, EDIT/ DELETE Button vbisibility
 //post and user as props, if user equals post creator -> visible edit/delete buttons
@@ -28,7 +30,7 @@ const Post = ({ post, user }) => {
 
 	const deletePost = () => {
 		//close menu
-		setAnchorEl(null);
+		handleClose();
 
 		postUtils.deletePost(post._id, (res) => {
 			//After successful delete -> redirect
@@ -42,66 +44,93 @@ const Post = ({ post, user }) => {
 		});
 	};
 
+	const editPost = () => {
+		//close menu
+		handleClose();
+	};
+
 	return (
 		<>
 			<CssBaseline />
 
 			<Box
 				sx={{
-					mb: 4,
+					mt: 4,
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					border: "1px solid gray",
+					border: "1px solid red",
 					position: "relative",
 					bgcolor: "paleturquoise", //TODO COLOR
 				}}
 			>
-				<Box
-					component="div"
-					sx={{
-						py: 1,
-						width: "100%",
-						borderBottom: "1px solid gray",
-						bgcolor: "gray", //TODO color
-					}}
+				<Grid
+					container
+					direction="row"
+					justifyContent="space-between"
+					alignItems="center"
+					sx={{ bgcolor: "yellow", m: 0, p: 1, width: "100%" }}
 				>
-					<Typography variant="h5">{post.title}</Typography>
-					{user._id === post.user._id && (
-						<IconButton
-							onClick={handleMenu}
-							color="inherit"
-							display="block"
-							aria-controls="menu-post"
-							sx={{
-								position: "absolute",
-								top: 0,
-								right: 0,
-								py: 1.5,
-								pr: 1,
-							}}
+					<Grid item>
+						<Grid
+							container
+							direction="row"
+							justifyContent="flex-start"
+							alignItems="center"
 						>
-							<MoreVertIcon />
-						</IconButton>
-					)}
-					<Menu
-						id="menu-post"
-						anchorEl={anchorEl}
-						anchorOrigin={{ vertical: "top", horizontal: "right" }}
-						keepMounted
-						transformOrigin={{
-							vertical: "top",
-							horizontal: "right",
-						}}
-						open={Boolean(anchorEl)}
-						onClose={handleClose}
-					>
-						<MenuItem onClick={handleClose}>Edit</MenuItem>
-						<MenuItem onClick={deletePost}>Delete</MenuItem>
-					</Menu>
-				</Box>
+							<Grid item>
+								<IconButton sx={{ p: 0 }}>
+									<ArrowUpwardIcon color="success" />
+								</IconButton>
+							</Grid>
+							<Grid item>0</Grid>
+							<Grid item>
+								<IconButton sx={{ p: 0 }}>
+									<ArrowDownwardIcon sx={{ color: "red" }} />
+								</IconButton>
+							</Grid>
+						</Grid>
+					</Grid>
+					<Grid item>
+						<Typography variant="h5">{post.title}</Typography>
+					</Grid>
+					<Grid item>
+						{user && user._id === post.user._id && (
+							<IconButton
+								onClick={handleMenu}
+								color="inherit"
+								display="block"
+								aria-controls="menu-post"
+								sx={{ p: 0 }}
+							>
+								<MoreVertIcon />
+							</IconButton>
+						)}
+						<Menu
+							id="menu-post"
+							anchorEl={anchorEl}
+							anchorOrigin={{
+								vertical: "top",
+								horizontal: "right",
+							}}
+							keepMounted
+							transformOrigin={{
+								vertical: "top",
+								horizontal: "right",
+							}}
+							open={Boolean(anchorEl)}
+							onClose={handleClose}
+						>
+							<MenuItem onClick={handleClose}>Edit</MenuItem>
+							<MenuItem onClick={deletePost}>Delete</MenuItem>
+						</Menu>
+					</Grid>
+				</Grid>
+
 				<Box component="div" sx={{ my: 2, width: "100%", px: 2 }}>
-					<Typography variant="body1">{post.content}</Typography>
+					<Typography variant="body1" sx={{ wordWrap: "break-word" }}>
+						{post.content}
+					</Typography>
 				</Box>
 
 				<Grid

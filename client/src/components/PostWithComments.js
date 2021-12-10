@@ -27,7 +27,7 @@ const PostWithComments = () => {
 				setComments(res.comments);
 			}
 		});
-	}, []);
+	}, [params.id]);
 
 	//Renders Post, Comemnts and a field for adding comments
 	return (

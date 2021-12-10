@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+
 import postUtils from "../auth/postUtils";
 
 const Comment = ({ user, comment }) => {
@@ -23,7 +24,7 @@ const Comment = ({ user, comment }) => {
 	};
 
 	const editComment = () => {
-		console.log("edit");
+		console.log(comment._id);
 	};
 
 	return (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "@mui/material";
+import { Container, Button, Typography, Link } from "@mui/material";
+
 import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";
 import PostInput from "./PostInput";
@@ -32,17 +33,20 @@ const Home = () => {
 	//Display postInput component if logged in
 	//And map all posts as Post component
 	return (
-		<Container
-			component="main"
-			maxWidth="md"
-			sx={{
-				marginTop: 8,
-			}}
-		>
+		<Container component="main" maxWidth="md">
 			{loggedIn && <PostInput user={user} />}
 			{posts &&
 				posts.map((post) => (
-					<Post post={post} user={user} key={post._id}></Post>
+					<div>
+						<Post post={post} user={user} key={post._id}></Post>
+						<Link
+							href={"/post/" + post._id}
+							color="primary"
+							underline="hover"
+						>
+							View post and comments
+						</Link>
+					</div>
 				))}
 		</Container>
 	);
