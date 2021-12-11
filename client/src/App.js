@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
+import Footer from "./components/Footer";
 import PostWithComments from "./components/PostWithComments";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
 						}
 					></Route>
 				</Routes>
+				<Footer />
 			</div>
 		</Router>
 	);
