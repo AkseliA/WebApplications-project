@@ -25,7 +25,7 @@ router.post("/add", (req, res, next) => {
 
 /* GET request for fetching all comments of a post */
 router.get("/fetch/:id", (req, res, next) => {
-	let postId = req.params.postId;
+	let postId = req.params.id;
 	Comment.fetchPostComments(postId, (err, comments) => {
 		if (err) throw err;
 		if (comments) {

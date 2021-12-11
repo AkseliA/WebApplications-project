@@ -22,6 +22,7 @@ const PostWithComments = () => {
 			}
 		});
 		//Fetch post related comments
+
 		postUtils.fetchComments(params.id, (res) => {
 			if (res.success) {
 				setComments(res.comments);
@@ -50,7 +51,7 @@ const PostWithComments = () => {
 					))}
 			</List>
 			{user && post && (
-				<CommentInput user={user} post={post._id}></CommentInput>
+				<CommentInput user={user} postId={post._id}></CommentInput>
 			)}
 		</Container>
 	);

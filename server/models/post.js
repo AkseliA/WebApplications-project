@@ -9,6 +9,7 @@ const postSchema = mongoose.Schema(
 		editDate: { type: Date },
 		title: { type: String },
 		content: { type: String },
+		codeSnippet: { type: String },
 	},
 	{ collection: "posts" }
 );

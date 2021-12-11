@@ -51,6 +51,7 @@ module.exports.addPost = function (data, callback) {
 			user: data.user,
 			title: data.title,
 			content: data.content,
+			codeSnippet: data.codeSnippet,
 			date: new Date(Date.now()),
 		};
 		fetch("/api/post/add", {

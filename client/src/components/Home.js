@@ -37,8 +37,8 @@ const Home = () => {
 			{loggedIn && <PostInput user={user} />}
 			{posts &&
 				posts.map((post) => (
-					<div>
-						<Post post={post} user={user} key={post._id}></Post>
+					<div key={post._id}>
+						<Post post={post} user={user}></Post>
 						<Link
 							href={"/post/" + post._id}
 							color="primary"

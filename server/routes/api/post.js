@@ -18,6 +18,7 @@ router.post(
 			date: req.body.date,
 			title: req.body.title,
 			content: req.body.content,
+			codeSnippet: req.body.codeSnippet,
 		});
 
 		Post.postNewPost(newPost, (err) => {
@@ -68,6 +69,7 @@ router.post("/edit", (req, res, next) => {
 	let editedPost = new Post({
 		editDate: currentDate,
 		content: req.body.content,
+		codeSnippet: req.body.codeSnippet,
 	});
 
 	Post.editPost(editedPost, (err, result) => {

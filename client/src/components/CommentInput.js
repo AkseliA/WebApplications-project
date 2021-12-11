@@ -13,6 +13,7 @@ const CommentInput = ({ user, postId }) => {
 			postId: postId,
 			content: content,
 		};
+		console.log(newComment);
 		postUtils.addComment(newComment, (res) => {
 			if (res.success) {
 				console.log(res);
