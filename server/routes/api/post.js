@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
-var Post = require("../../models/post");
-var Comment = require("../../models/comment");
+const Post = require("../../models/post");
+const Comment = require("../../models/comment");
 var passport = require("passport");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
@@ -102,5 +102,24 @@ router.delete("/del", (req, res) => {
 		}
 	});
 });
+
+router.post(
+	"/vote",
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		let data = {
+			post: req.body.post,
+			userId: req.user._id,
+			voteType: req.body.voteType,
+		};
+		Post.adjustVote(data, (result, err) => {
+			if (err) {
+				return res.json({ success: false, err });
+			} else {
+				return res.json({ success: true, msg: "Vote successful" });
+			}
+		});
+	}
+);
 
 module.exports = router;

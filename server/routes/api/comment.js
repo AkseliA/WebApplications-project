@@ -1,8 +1,9 @@
 var express = require("express");
 var router = express.Router();
-var Comment = require("../../models/comment");
+const Comment = require("../../models/comment");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+var passport = require("passport");
 const formValidate = require("../../auth/formValidate");
 const bcrypt = require("bcryptjs");
 
@@ -68,4 +69,22 @@ router.post("/edit/:id", (req, res, next) => {
 	});
 });
 
+router.post(
+	"/vote",
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		let data = {
+			comment: req.body.comment,
+			userId: req.user._id,
+			voteType: req.body.voteType,
+		};
+		Comment.adjustVote(data, (result, err) => {
+			if (err) {
+				return res.json({ success: false, err });
+			} else {
+				return res.json({ success: true, msg: "Vote successful" });
+			}
+		});
+	}
+);
 module.exports = router;

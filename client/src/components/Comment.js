@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Avatar,
 	Box,
@@ -9,10 +9,24 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import postUtils from "../auth/postUtils";
 
 const Comment = ({ user, comment }) => {
+	const [hasVoted, setHasVoted] = useState(null);
+
+	//Check if user has voted and change color of arrows accordingly
+	useEffect(() => {
+		if (user && comment.voters.length !== 0) {
+			const match = comment.voters.filter(
+				(vote) => vote.userId === user._id
+			);
+			setHasVoted(match[0].voteType);
+		}
+	}, [comment, user]);
+
 	//TODO: Confirm dialogs?
 	const deleteComment = () => {
 		postUtils.deleteComment(comment._id, (res) => {
@@ -25,6 +39,21 @@ const Comment = ({ user, comment }) => {
 
 	const editComment = () => {
 		console.log(comment._id);
+	};
+
+	//voteType +/- 1
+	const handleVote = (voteType) => {
+		if (!user) return;
+		let vote = {
+			comment: comment,
+			userId: user._id,
+			voteType: voteType,
+		};
+		console.log(voteType);
+		postUtils.handleCommentVote(vote, (res) => {
+			window.location.reload();
+		});
+		//Vote validation is done server side. Refresh page after successful vote
 	};
 
 	return (
@@ -121,12 +150,67 @@ const Comment = ({ user, comment }) => {
 						</Grid>
 					</Grid>
 				</Grid>
+				<Grid
+					container
+					sx={{ bgcolor: "red", m: 0, p: 0, width: "100%" }}
+				>
+					<Grid item xs>
+						<Box
+							sx={{
+								my: 2,
+								width: "100%",
+								px: 2,
+								textAlign: "left",
+							}}
+						>
+							<Typography variant="body1">
+								{comment.content}
+							</Typography>
+						</Box>
+					</Grid>
+					<Grid item xs="auto">
+						<Grid
+							container
+							direction="column"
+							justifyContent="flex-end"
+							alignItems="flex-end"
+						>
+							<Grid item xs>
+								<IconButton
+									sx={{ py: 0 }}
+									onClick={() => handleVote(1)}
+								>
+									<KeyboardArrowUpIcon
+										color={
+											hasVoted === 1
+												? "success"
+												: "default"
+										}
+									/>
+								</IconButton>
+							</Grid>
+							<Grid item xs sx={{ px: 2 }}>
+								{comment.voteCount}
+							</Grid>
+							<Grid item xs>
+								<IconButton
+									sx={{ py: 0 }}
+									onClick={() => handleVote(-1)}
+								>
+									<KeyboardArrowDownIcon
+										sx={{
+											color:
+												hasVoted === -1
+													? "red"
+													: "default",
+										}}
+									/>
+								</IconButton>
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
 
-				<Box sx={{ my: 2, width: "100%", px: 1 }}>
-					<Typography variant="body1" sx={{ textAlign: "left" }}>
-						{comment.content}
-					</Typography>
-				</Box>
 				<Grid
 					container
 					sx={{ bgcolor: "green", m: 0, p: 0, width: "100%" }}

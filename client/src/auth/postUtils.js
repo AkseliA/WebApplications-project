@@ -103,3 +103,37 @@ module.exports.deletePost = function (postId, callback) {
 			callback(data);
 		});
 };
+
+module.exports.handlePostVote = function (vote, callback) {
+	let jwt = localStorage.getItem("JWT");
+	fetch("/api/post/vote", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${jwt}`,
+		},
+		body: JSON.stringify(vote),
+		mode: "cors",
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			callback(data);
+		});
+};
+
+module.exports.handleCommentVote = function (vote, callback) {
+	let jwt = localStorage.getItem("JWT");
+	fetch("/api/comment/vote", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${jwt}`,
+		},
+		body: JSON.stringify(vote),
+		mode: "cors",
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			callback(data);
+		});
+};

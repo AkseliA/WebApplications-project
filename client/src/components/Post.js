@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Menu,
 	MenuItem,
@@ -15,17 +15,44 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import postUtils from "../auth/postUtils";
 
-//TODO POST AVATAR, EDIT/ DELETE Button vbisibility
+//TODO POST AVATAR, EDIT/ DELETE Button vbisibility, vote color(success^, red v)
 //post and user as props, if user equals post creator -> visible edit/delete buttons
 const Post = ({ post, user }) => {
 	//For handling menu clicks
 	const [anchorEl, setAnchorEl] = useState(null);
+	const [hasVoted, setHasVoted] = useState(null);
+
+	//This is used to check if user has voted and change the vote arrow color accordingly
+	useEffect(() => {
+		if (user && post.voters.length !== 0) {
+			const match = post.voters.filter(
+				(vote) => vote.userId === user._id
+			);
+			setHasVoted(match[0].voteType);
+		}
+	}, [post, user]);
+
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	//voteType +/- 1
+	const handleVote = (voteType) => {
+		if (!user) return;
+		let vote = {
+			post: post,
+			userId: user._id,
+			voteType: voteType,
+		};
+
+		//Vote validation is done server side. After successful vote refresh page
+		postUtils.handlePostVote(vote, (res) => {
+			window.location.reload();
+		});
 	};
 
 	const deletePost = () => {
@@ -46,6 +73,7 @@ const Post = ({ post, user }) => {
 
 	const editPost = () => {
 		//close menu
+		console.log(post);
 		handleClose();
 	};
 
@@ -79,14 +107,33 @@ const Post = ({ post, user }) => {
 							alignItems="center"
 						>
 							<Grid item>
-								<IconButton sx={{ p: 0 }}>
-									<ArrowUpwardIcon color="success" />
+								<IconButton
+									sx={{ p: 0 }}
+									onClick={() => handleVote(1)}
+								>
+									<ArrowUpwardIcon
+										color={
+											hasVoted === 1
+												? "success"
+												: "default"
+										}
+									/>
 								</IconButton>
 							</Grid>
-							<Grid item>0</Grid>
+							<Grid item>{post.voteCount}</Grid>
 							<Grid item>
-								<IconButton sx={{ p: 0 }}>
-									<ArrowDownwardIcon sx={{ color: "red" }} />
+								<IconButton
+									sx={{ p: 0 }}
+									onClick={() => handleVote(-1)}
+								>
+									<ArrowDownwardIcon
+										sx={{
+											color:
+												hasVoted === -1
+													? "red"
+													: "default",
+										}}
+									/>
 								</IconButton>
 							</Grid>
 						</Grid>
@@ -121,16 +168,34 @@ const Post = ({ post, user }) => {
 							open={Boolean(anchorEl)}
 							onClose={handleClose}
 						>
-							<MenuItem onClick={handleClose}>Edit</MenuItem>
+							<MenuItem onClick={editPost}>Edit</MenuItem>
 							<MenuItem onClick={deletePost}>Delete</MenuItem>
 						</Menu>
 					</Grid>
 				</Grid>
 
-				<Box component="div" sx={{ my: 2, width: "100%", px: 2 }}>
+				<Box
+					component="div"
+					sx={{ my: 2, width: "100%", px: 2, textAlign: "left" }}
+				>
 					<Typography variant="body1" sx={{ wordWrap: "break-word" }}>
 						{post.content}
 					</Typography>
+					{post.codeSnippet && (
+						<Box
+							component="div"
+							sx={{
+								bgcolor: "red",
+								width: "100%",
+								overflow: "auto",
+								p: 0.5,
+							}}
+						>
+							<pre style={{ margin: 0 }}>
+								<code>{post.codeSnippet}</code>
+							</pre>
+						</Box>
+					)}
 				</Box>
 
 				<Grid

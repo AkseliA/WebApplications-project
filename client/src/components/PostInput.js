@@ -17,6 +17,15 @@ const PostInput = ({ user }) => {
 	const [content, setContent] = useState("");
 	const [codeSnippet, setCodeSnippet] = useState("");
 
+	//Insert indent (4 spaces) when tab is pressed inside code field
+	const handleTab = (e) => {
+		if (e.key === "Tab") {
+			let newSnippet = codeSnippet + "    ";
+			e.preventDefault();
+			setCodeSnippet(newSnippet);
+		}
+	};
+
 	// POST request to server
 	const submitPost = (e) => {
 		e.preventDefault();
@@ -65,6 +74,7 @@ const PostInput = ({ user }) => {
 						type="text"
 						id="content"
 						value={title}
+						inputProps={{ maxLength: 40 }}
 						sx={{ mb: 2 }}
 						onChange={(e) => setTitle(e.target.value)}
 					/>
@@ -105,6 +115,7 @@ const PostInput = ({ user }) => {
 							type="text"
 							id="codeInput"
 							value={codeSnippet}
+							onKeyDown={handleTab}
 							onChange={(e) => setCodeSnippet(e.target.value)}
 						/>
 					)}
