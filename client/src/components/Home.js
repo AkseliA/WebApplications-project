@@ -10,9 +10,6 @@ import Post from "./Post";
 const Home = () => {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState(null);
-	//usestate postauksille. Postit haetaan mongodbstä ja lisätään usestateen.
-	//Kun lisätään uusia postauksia ne lisätään db sekä staten perään, jottei tarvitse
-	//tehdä uutta hakua
 	const [posts, setPosts] = useState(null);
 
 	//useEffect when component is loaded, checks if user is logged in

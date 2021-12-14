@@ -9,6 +9,7 @@ import {
 	IconButton,
 	Avatar,
 } from "@mui/material";
+import hljs from "highlight.js";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -23,7 +24,9 @@ const Post = ({ post, user }) => {
 	const [hasVoted, setHasVoted] = useState(null);
 
 	//This is used to check if user has voted and change the vote arrow color accordingly
+	//Also initializes highlight.js for highlighting any <pre><code></pre></code> blocks.
 	useEffect(() => {
+		hljs.highlightAll();
 		if (user && post.voters.length !== 0) {
 			const match = post.voters.filter(
 				(vote) => vote.userId === user._id
