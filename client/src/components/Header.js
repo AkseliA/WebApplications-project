@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+
 import { useLocation } from "react-router";
 //Mui imports
 import AppBar from "@mui/material/AppBar";
+import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+
 import SettingsIcon from "@mui/icons-material/Settings";
+import SearchIcon from "@mui/icons-material/Search";
 
 import authUtils from "../auth/authUtils";
 //Used a mui template appbar:
@@ -33,7 +36,6 @@ const Header = () => {
 		setAnchorEl(null);
 	};
 
-	//TODO LOGIN / REGISTER LINKS
 	return (
 		<Box sx={{ flexGrow: 1, mb: 8 }}>
 			<AppBar position="static">
@@ -47,10 +49,15 @@ const Header = () => {
 							fontWeight: "bold",
 						}}
 					>
-						<Link to="/" id="homeHeader">
+						<Link href="/" id="homeHeader">
 							MY APP
 						</Link>
 					</Typography>
+					<Link href="/search">
+						<IconButton size="large" aria-label="Search">
+							<SearchIcon sx={{ color: "white" }} />
+						</IconButton>
+					</Link>
 					{loggedIn ? (
 						<div>
 							<IconButton
@@ -78,11 +85,19 @@ const Header = () => {
 								onClose={handleClose}
 							>
 								<MenuItem onClick={handleClose}>
-									<Link to="/profile">My profile</Link>
+									<Link
+										href="/profile"
+										color="black"
+										underline="none"
+									>
+										My profile
+									</Link>
 								</MenuItem>
 								<MenuItem onClick={handleClose}>
 									<Link
-										to="/login"
+										href="/login"
+										color="black"
+										underline="none"
 										onClick={() => {
 											authUtils.logOut();
 										}}
@@ -94,8 +109,22 @@ const Header = () => {
 						</div>
 					) : (
 						<div>
-							<Link to="/login">Login</Link>
-							<Link to="/register">Register</Link>
+							<Link
+								href="/login"
+								color="inherit"
+								sx={{ mx: 1 }}
+								underline="none"
+							>
+								Login
+							</Link>
+							<Link
+								href="/register"
+								color="inherit"
+								sx={{ mx: 1 }}
+								underline="none"
+							>
+								Register
+							</Link>
 						</div>
 					)}
 				</Toolbar>

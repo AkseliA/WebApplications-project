@@ -137,3 +137,26 @@ module.exports.handleCommentVote = function (vote, callback) {
 			callback(data);
 		});
 };
+
+//This function fetches all posts and filters out any posts containing searchTerm
+//in title, content or codeSnippet field.
+module.exports.searchPosts = function (searchTerm, callback) {
+	fetch("/api/post/fetch")
+		.then((response) => response.json())
+		.then((data) => {
+			let searchResult = [];
+			if (data.success) {
+				//filter out messages with matches
+				data.posts.forEach((post) => {
+					if (
+						post.title.toLowerCase().includes(searchTerm) ||
+						post.content.toLowerCase().includes(searchTerm) ||
+						post.codeSnippet.toLowerCase().includes(searchTerm)
+					) {
+						searchResult.push(post);
+					}
+				});
+			}
+			callback(searchResult);
+		});
+};

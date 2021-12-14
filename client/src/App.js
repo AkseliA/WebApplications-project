@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Footer from "./components/Footer";
 import PostWithComments from "./components/PostWithComments";
+import Search from "./components/Search";
 
 function App() {
 	return (
@@ -35,6 +36,7 @@ function App() {
 						path="/post/:id"
 						element={<PostWithComments />}
 					></Route>
+					<Route path="/search" element={<Search />}></Route>
 					<Route
 						path="*"
 						exact={true}

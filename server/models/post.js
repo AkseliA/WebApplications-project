@@ -100,5 +100,3 @@ module.exports.adjustVote = function (data, callback) {
 		callback(err, res);
 	});
 };
-
-module.exports.deleteVote = function (data, callback) {};
