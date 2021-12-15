@@ -16,6 +16,8 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import postUtils from "../auth/postUtils";
 
+import EditPost from "./EditPost";
+
 //TODO POST AVATAR, EDIT/ DELETE Button vbisibility, vote color(success^, red v)
 //post and user as props, if user equals post creator -> visible edit/delete buttons
 const Post = ({ post, user }) => {
@@ -23,10 +25,15 @@ const Post = ({ post, user }) => {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [hasVoted, setHasVoted] = useState(null);
 
+	const [editMode, setEditMode] = useState(false);
+
 	//This is used to check if user has voted and change the vote arrow color accordingly
 	//Also initializes highlight.js for highlighting any <pre><code></pre></code> blocks.
 	useEffect(() => {
-		hljs.highlightAll();
+		if (post.codeSnippet) {
+			hljs.highlightElement(document.querySelector("pre code"));
+		}
+
 		if (user && post.voters.length !== 0) {
 			const match = post.voters.filter(
 				(vote) => vote.userId === user._id
@@ -76,8 +83,8 @@ const Post = ({ post, user }) => {
 
 	const editPost = () => {
 		//close menu
-		console.log(post);
 		handleClose();
+		setEditMode(editMode ? false : true);
 	};
 
 	return (
@@ -100,7 +107,12 @@ const Post = ({ post, user }) => {
 					direction="row"
 					justifyContent="space-between"
 					alignItems="center"
-					sx={{ bgcolor: "yellow", m: 0, p: 1, width: "100%" }}
+					sx={{
+						bgcolor: "yellow",
+						m: 0,
+						p: 1,
+						width: "100%",
+					}}
 				>
 					<Grid item>
 						<Grid
@@ -171,35 +183,50 @@ const Post = ({ post, user }) => {
 							open={Boolean(anchorEl)}
 							onClose={handleClose}
 						>
-							<MenuItem onClick={editPost}>Edit</MenuItem>
+							<MenuItem onClick={editPost}>
+								{!editMode ? "Edit" : "Return"}
+							</MenuItem>
 							<MenuItem onClick={deletePost}>Delete</MenuItem>
 						</Menu>
 					</Grid>
 				</Grid>
-
-				<Box
-					component="div"
-					sx={{ my: 2, width: "100%", px: 2, textAlign: "left" }}
-				>
-					<Typography variant="body1" sx={{ wordWrap: "break-word" }}>
-						{post.content}
-					</Typography>
-					{post.codeSnippet && (
+				{!editMode ? (
+					<>
 						<Box
 							component="div"
 							sx={{
-								bgcolor: "red",
+								my: 2,
 								width: "100%",
-								overflow: "auto",
-								p: 0.5,
+								px: 2,
+								textAlign: "left",
 							}}
 						>
-							<pre style={{ margin: 0 }}>
-								<code>{post.codeSnippet}</code>
-							</pre>
+							<Typography
+								variant="body1"
+								sx={{ wordWrap: "break-word" }}
+							>
+								{post.content}
+							</Typography>
+							{post.codeSnippet && (
+								<Box
+									component="div"
+									sx={{
+										bgcolor: "red",
+										width: "100%",
+										overflow: "auto",
+										p: 0.5,
+									}}
+								>
+									<pre style={{ margin: 0 }}>
+										<code>{post.codeSnippet}</code>
+									</pre>
+								</Box>
+							)}
 						</Box>
-					)}
-				</Box>
+					</>
+				) : (
+					<EditPost originalPost={post} />
+				)}
 
 				<Grid
 					container

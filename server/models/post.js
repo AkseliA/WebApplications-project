@@ -33,17 +33,6 @@ module.exports.postNewPost = function (newPost, callback) {
 	newPost.save(callback);
 };
 
-//Edit post
-module.exports.editPost = function (post, callback) {
-	let postId = post._id;
-	let update = { editDate: post.editDate, content: post.content };
-
-	Post.findByIdAndUpdate(postId, update, (err, result) => {
-		if (err) throw err;
-		callback(null, result);
-	});
-};
-
 //Remove post
 module.exports.deletePost = function (postId, callback) {
 	Post.findByIdAndDelete(postId, callback);
@@ -98,5 +87,19 @@ module.exports.adjustVote = function (data, callback) {
 
 	Post.findByIdAndUpdate(postId, update, { new: true }, (res, err) => {
 		callback(err, res);
+	});
+};
+
+module.exports.editPost = function (updatedPost, callback) {
+	let postId = updatedPost;
+	let update = {
+		title: updatedPost.title,
+		content: updatedPost.content,
+		codeSnippet: updatedPost.codeSnippet,
+		editDate: updatedPost.editDate,
+	};
+	Post.findByIdAndUpdate(postId, update, { new: true }, (err, result) => {
+		if (err) throw err;
+		callback(null, result);
 	});
 };

@@ -28,17 +28,22 @@ module.exports.postNewComment = function (newComment, callback) {
 };
 
 //Edit comment
-module.exports.editComment = function (editedComment, callback) {
-	let commentId = editedComment._id;
+module.exports.editComment = function (updatedComment, callback) {
+	let commentId = updatedComment;
 	let update = {
-		editDate: editedComment.editDate,
-		content: editedComment.content,
+		content: updatedComment.content,
+		editDate: updatedComment.editDate,
 	};
 
-	Comment.findByIdAndUpdate(commentId, update, (err, result) => {
-		if (err) throw err;
-		callback(null, result);
-	});
+	Comment.findByIdAndUpdate(
+		commentId,
+		update,
+		{ new: true },
+		(err, result) => {
+			if (err) throw err;
+			callback(null, result);
+		}
+	);
 };
 
 //Delete single comment (based on comment _id)

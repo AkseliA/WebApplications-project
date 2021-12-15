@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import postUtils from "../auth/postUtils";
 
-//TODO: Titlen pituus limit
 const PostInput = ({ user }) => {
 	const [checked, setChecked] = useState(false);
 	const [title, setTitle] = useState("");

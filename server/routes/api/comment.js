@@ -61,13 +61,27 @@ router.delete("/deleteSingle", (req, res, next) => {
 	});
 });
 
-router.post("/edit/:id", (req, res, next) => {
-	const commentId = req.params.id;
-	const editedComment = new Comment({
-		_id: commentId,
-		content: req.body.content,
-	});
-});
+router.post(
+	"/edit/",
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		let updatedComment = {
+			_id: req.body._id,
+			content: req.body.content,
+			editDate: req.body.editDate,
+		};
+		Comment.editComment(updatedComment, (err, result) => {
+			if (result) {
+				return res.json({ success: true, result });
+			} else {
+				return res.json({
+					success: false,
+					msg: "Failed to edit comment",
+				});
+			}
+		});
+	}
+);
 
 router.post(
 	"/vote",

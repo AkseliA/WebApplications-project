@@ -160,3 +160,37 @@ module.exports.searchPosts = function (searchTerm, callback) {
 			callback(searchResult);
 		});
 };
+
+module.exports.editPost = function (editedPost, callback) {
+	let jwt = localStorage.getItem("JWT");
+	fetch("/api/post/edit", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${jwt}`,
+		},
+		body: JSON.stringify(editedPost),
+		mode: "cors",
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			callback(data);
+		});
+};
+
+module.exports.editComment = function (editedComment, callback) {
+	let jwt = localStorage.getItem("JWT");
+	fetch("/api/comment/edit", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${jwt}`,
+		},
+		body: JSON.stringify(editedComment),
+		mode: "cors",
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			callback(data);
+		});
+};

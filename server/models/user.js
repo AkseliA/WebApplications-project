@@ -33,7 +33,6 @@ module.exports.updateUser = function (updatedUser, callback) {
 		bio: updatedUser.bio,
 		avatar: updatedUser.avatar,
 	};
-	console.log(userId);
 
 	User.findByIdAndUpdate(userId, update, { new: true }, (err, result) => {
 		if (err) throw err;

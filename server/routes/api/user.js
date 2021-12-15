@@ -160,29 +160,39 @@ router.post(
 	passport.authenticate("jwt", { session: false }),
 	upload.single("avatar"),
 	(req, res, next) => {
-		//First upload avatar to avatars collection.
+		//First upload avatar to avatars collection. if avatar exists
 		//New avatar _id is linked to users' db "avatar" field
-		let newAvatar = new Avatar({
-			buffer: req.file.buffer,
-			mimetype: req.file.mimetype,
-			name: req.file.originalname,
-			encoding: req.file.encoding,
-		});
-		Avatar.addNewAvatar(newAvatar, (err) => {
-			if (err) throw err;
-		});
-
+		if (req.file) {
+			const newAvatar = new Avatar({
+				buffer: req.file.buffer,
+				mimetype: req.file.mimetype,
+				name: req.file.originalname,
+				encoding: req.file.encoding,
+			});
+			Avatar.addNewAvatar(newAvatar, (err) => {
+				if (err) throw err;
+			});
+			var updatedUser = new User({
+				_id: req.user._id,
+				bio: req.body.bio,
+				avatar: newAvatar._id,
+			});
+		} else {
+			updatedUser = new User({
+				_id: req.user._id,
+				bio: req.body.bio,
+				avatar: null,
+			});
+		}
 		//Then the user is updated
-		let updatedUser = new User({
-			_id: req.user._id,
-			bio: req.body.bio,
-			avatar: newAvatar._id,
-		});
 		User.updateUser(updatedUser, (err, result) => {
 			if (result) {
 				return res.json({ success: true, result });
 			} else {
-				return res.json({ success: false, msg: "Failed to edit user" });
+				return res.json({
+					success: false,
+					msg: "Failed to edit user",
+				});
 			}
 		});
 	}

@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Box, TextField, Input } from "@mui/material";
 import authUtils from "../auth/authUtils";
 
 const EditProfile = ({ user }) => {
 	const [newBio, setNewBio] = useState("");
 	const [newPfp, setNewPfp] = useState("");
+
+	useEffect(() => {
+		setNewBio(user.bio);
+	}, [user]);
 
 	const submitEdit = (e) => {
 		e.preventDefault();

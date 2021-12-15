@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Typography, Link } from "@mui/material";
+import { Container, Link } from "@mui/material";
 
 import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";

@@ -45,20 +45,18 @@ const Profile = () => {
 					{editMode ? "My profile" : "Edit profile"}
 				</Typography>
 
-				{user.avatar && (
-					<Avatar
-						id="profilePicture"
-						alt={user.username}
-						src={"/api/user/avatar/" + user.avatar}
-						sx={{
-							width: 150,
-							height: 150,
-							borderRadius: "50%",
-							display: "inline",
-							m: 1,
-						}}
-					></Avatar>
-				)}
+				<Avatar
+					id="profilePicture"
+					alt={user.username}
+					src={"/api/user/avatar/" + user.avatar}
+					sx={{
+						width: 150,
+						height: 150,
+						display: "inline",
+						m: 1,
+					}}
+				></Avatar>
+
 				<CardContent>
 					{editMode ? (
 						<DisplayProfile user={user} />

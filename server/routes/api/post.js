@@ -7,6 +7,7 @@ const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const formValidate = require("../../auth/formValidate");
 const bcrypt = require("bcryptjs");
+const { update } = require("../../models/comment");
 
 //TODO: userid from after passport auth
 router.post(
@@ -62,25 +63,6 @@ router.get("/fetch/:postId", (req, res, next) => {
 	});
 });
 
-//TODO Suojattu, KESKEN
-router.post("/edit", (req, res, next) => {
-	let currentDate = new Date(Date.now());
-
-	let editedPost = new Post({
-		editDate: currentDate,
-		content: req.body.content,
-		codeSnippet: req.body.codeSnippet,
-	});
-
-	Post.editPost(editedPost, (err, result) => {
-		if (result) {
-			return res.json({ success: true, msg: "Post edited" });
-		} else {
-			return res.json({ success: false, msg: "Failed to edit post" });
-		}
-	});
-});
-
 // DELETE post based on its mongodb _id (Also removes related comments)
 router.delete("/del", (req, res) => {
 	const postId = req.body._id;
@@ -122,4 +104,25 @@ router.post(
 	}
 );
 
+//passport protected POST request for updating a post
+router.post(
+	"/edit",
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		let updatedPost = {
+			_id: req.body._id,
+			title: req.body.title,
+			content: req.body.content,
+			codeSnippet: req.body.codeSnippet,
+			editDate: req.body.editDate,
+		};
+		Post.editPost(updatedPost, (err, result) => {
+			if (result) {
+				return res.json({ success: true, result });
+			} else {
+				return res.json({ success: false, msg: "Failed to edit post" });
+			}
+		});
+	}
+);
 module.exports = router;
