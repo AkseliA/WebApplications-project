@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Link } from "@mui/material";
+import { Container, Link, CssBaseline } from "@mui/material";
 
 import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";
 import PostInput from "./PostInput";
 import Post from "./Post";
+
 //TODO: FORM VALIDATION!
 
 const Home = () => {
@@ -30,22 +31,26 @@ const Home = () => {
 	//Display postInput component if logged in
 	//And map all posts as Post component
 	return (
-		<Container component="main" maxWidth="md">
-			{loggedIn && <PostInput user={user} />}
-			{posts &&
-				posts.map((post) => (
-					<div key={post._id}>
-						<Post post={post} user={user}></Post>
-						<Link
-							href={"/post/" + post._id}
-							color="primary"
-							underline="hover"
-						>
-							View post and comments
-						</Link>
-					</div>
-				))}
-		</Container>
+		<>
+			<CssBaseline />
+
+			<Container component="main" maxWidth="md">
+				{loggedIn && <PostInput user={user} />}
+				{posts &&
+					posts.map((post) => (
+						<div key={post._id}>
+							<Post post={post} user={user}></Post>
+							<Link
+								href={"/post/" + post._id}
+								color="text.primary"
+								underline="hover"
+							>
+								View post and comments
+							</Link>
+						</div>
+					))}
+			</Container>
+		</>
 	);
 };
 

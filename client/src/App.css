@@ -1,7 +1,7 @@
 .App {
 	text-align: center;
 	height: auto;
-	background-color: #e3f2fd;
+	background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
 	min-height: 100vh;
 }
 
@@ -52,6 +52,5 @@ a {
 	margin-right: 10px;
 }
 #homeHeader {
-	color: white;
 	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }

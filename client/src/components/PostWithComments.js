@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Container, List } from "@mui/material";
+import { Container, List, CssBaseline } from "@mui/material";
 import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";
 import Post from "./Post";
@@ -32,28 +32,32 @@ const PostWithComments = () => {
 
 	//Renders Post, Comemnts and a field for adding comments
 	return (
-		<Container
-			component="main"
-			maxWidth="md"
-			sx={{
-				marginTop: 8,
-			}}
-		>
-			{post && <Post post={post} user={user}></Post>}
-			<List sx={{ width: "100%" }}>
-				{comments &&
-					comments.map((comment) => (
-						<Comment
-							key={comment._id}
-							comment={comment}
-							user={user}
-						></Comment>
-					))}
-			</List>
-			{user && post && (
-				<CommentInput user={user} postId={post._id}></CommentInput>
-			)}
-		</Container>
+		<>
+			<CssBaseline />
+
+			<Container
+				component="main"
+				maxWidth="md"
+				sx={{
+					marginTop: 8,
+				}}
+			>
+				{post && <Post post={post} user={user}></Post>}
+				<List sx={{ width: "100%" }}>
+					{comments &&
+						comments.map((comment) => (
+							<Comment
+								key={comment._id}
+								comment={comment}
+								user={user}
+							></Comment>
+						))}
+				</List>
+				{user && post && (
+					<CommentInput user={user} postId={post._id}></CommentInput>
+				)}
+			</Container>
+		</>
 	);
 };
 

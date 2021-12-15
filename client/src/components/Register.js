@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import AlertSnackbar from "./AlertSnackbar";
 
 import {
 	Button,
@@ -7,16 +8,23 @@ import {
 	Grid,
 	Box,
 	Typography,
+	CssBaseline,
 	Container,
 } from "@mui/material";
 
-//TODO: FORM VALIDATION, Titlen pituus limit
 const Register = () => {
 	const navigate = useNavigate();
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
+	const [snackbarProps, setSnackbarProps] = useState({ isOpen: false });
+
+	const onSnackbarClose = () => {
+		setSnackbarProps({ isOpen: false });
+	};
+
+	//Form validation is done server side, before registering
 	const submitRegister = (e) => {
 		e.preventDefault();
 
@@ -41,69 +49,102 @@ const Register = () => {
 					setEmail("");
 					setPassword("");
 					navigate("/login");
+
+					//If validation errors -> display snackbar alert
+				} else {
+					setSnackbarProps({
+						isOpen: true,
+						duration: 5000,
+						alertType: "warning",
+						msg: data.msg,
+					});
 				}
 			});
 	};
 
 	return (
-		<Container component="main" maxWidth="xs">
-			<Box
-				sx={{
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				<Typography variant="h5">Register</Typography>
-				<Box component="form" sx={{ mt: 3 }} onSubmit={submitRegister}>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								name="username"
-								required
-								fullWidth
-								id="username"
-								label="Username"
-								autoFocus
-								value={username}
-								onChange={(e) => setUsername(e.target.value)}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
-								name="email"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								required
-								fullWidth
-								name="password"
-								label="Password"
-								type="password"
-								id="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-							/>
-						</Grid>
-					</Grid>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
+		<>
+			<CssBaseline />
+			{snackbarProps.isOpen && (
+				<AlertSnackbar
+					duration={snackbarProps.duration}
+					alertType={snackbarProps.alertType}
+					msg={snackbarProps.msg}
+					isOpen={snackbarProps.isOpen}
+					onClose={onSnackbarClose}
+				/>
+			)}
+
+			<Container component="main" maxWidth="xs">
+				<Box
+					sx={{
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						backgroundColor: "background.paper",
+						p: 1,
+						borderRadius: 1,
+					}}
+				>
+					<Typography variant="h5">Register</Typography>
+					<Box
+						component="form"
+						sx={{ mt: 3 }}
+						onSubmit={submitRegister}
 					>
-						Submit
-					</Button>
+						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<TextField
+									name="username"
+									required
+									fullWidth
+									id="username"
+									label="Username"
+									autoFocus
+									value={username}
+									onChange={(e) =>
+										setUsername(e.target.value)
+									}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									required
+									fullWidth
+									id="email"
+									label="Email Address"
+									name="email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									required
+									fullWidth
+									name="password"
+									label="Password"
+									type="password"
+									id="password"
+									value={password}
+									onChange={(e) =>
+										setPassword(e.target.value)
+									}
+								/>
+							</Grid>
+						</Grid>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							sx={{ mt: 3, mb: 1 }}
+						>
+							Submit
+						</Button>
+					</Box>
 				</Box>
-			</Box>
-		</Container>
+			</Container>
+		</>
 	);
 };
 

@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import { CssBaseline } from "@mui/material";
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import SearchIcon from "@mui/icons-material/Search";
@@ -37,99 +38,108 @@ const Header = () => {
 	};
 
 	return (
-		<Box sx={{ flexGrow: 1, mb: 8 }}>
-			<AppBar position="static">
-				<Toolbar>
-					<Typography
-						variant="h4"
-						component="div"
-						sx={{
-							flexGrow: 1,
-							textAlign: "left",
-							fontWeight: "bold",
-						}}
-					>
-						<Link href="/" id="homeHeader">
-							MY APP
-						</Link>
-					</Typography>
-					<Link href="/search">
-						<IconButton size="large" aria-label="Search">
-							<SearchIcon sx={{ color: "white" }} />
-						</IconButton>
-					</Link>
-					{loggedIn ? (
-						<div>
-							<IconButton
-								size="large"
-								aria-controls="menu-appbar"
-								aria-haspopup="true"
-								onClick={handleMenu}
-								color="inherit"
+		<>
+			<CssBaseline />
+
+			<Box sx={{ flexGrow: 1, mb: 8 }}>
+				<AppBar position="static">
+					<Toolbar>
+						<Typography
+							variant="h4"
+							component="div"
+							sx={{
+								flexGrow: 1,
+								textAlign: "left",
+								fontWeight: "bold",
+							}}
+						>
+							<Link
+								href="/"
+								id="homeHeader"
+								color="text.primary"
+								underline="none"
 							>
-								<SettingsIcon />
+								MY APP
+							</Link>
+						</Typography>
+						<Link href="/search">
+							<IconButton size="large" aria-label="Search">
+								<SearchIcon sx={{ color: "text.primary" }} />
 							</IconButton>
-							<Menu
-								id="menu-appbar"
-								anchorEl={anchorEl}
-								anchorOrigin={{
-									vertical: "top",
-									horizontal: "right",
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: "top",
-									horizontal: "right",
-								}}
-								open={Boolean(anchorEl)}
-								onClose={handleClose}
-							>
-								<MenuItem onClick={handleClose}>
-									<Link
-										href="/profile"
-										color="black"
-										underline="none"
-									>
-										My profile
-									</Link>
-								</MenuItem>
-								<MenuItem onClick={handleClose}>
-									<Link
-										href="/login"
-										color="black"
-										underline="none"
-										onClick={() => {
-											authUtils.logOut();
-										}}
-									>
-										Logout
-									</Link>
-								</MenuItem>
-							</Menu>
-						</div>
-					) : (
-						<div>
-							<Link
-								href="/login"
-								color="inherit"
-								sx={{ mx: 1 }}
-								underline="none"
-							>
-								Login
-							</Link>
-							<Link
-								href="/register"
-								color="inherit"
-								sx={{ mx: 1 }}
-								underline="none"
-							>
-								Register
-							</Link>
-						</div>
-					)}
-				</Toolbar>
-			</AppBar>
-		</Box>
+						</Link>
+						{loggedIn ? (
+							<div>
+								<IconButton
+									size="large"
+									aria-controls="menu-appbar"
+									aria-haspopup="true"
+									onClick={handleMenu}
+									color="inherit"
+								>
+									<SettingsIcon />
+								</IconButton>
+								<Menu
+									id="menu-appbar"
+									anchorEl={anchorEl}
+									anchorOrigin={{
+										vertical: "top",
+										horizontal: "right",
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: "top",
+										horizontal: "right",
+									}}
+									open={Boolean(anchorEl)}
+									onClose={handleClose}
+								>
+									<MenuItem onClick={handleClose}>
+										<Link
+											href="/profile"
+											color="text.primary"
+											underline="none"
+										>
+											My profile
+										</Link>
+									</MenuItem>
+									<MenuItem onClick={handleClose}>
+										<Link
+											href="/login"
+											color="text.primary"
+											underline="none"
+											onClick={() => {
+												authUtils.logOut();
+											}}
+										>
+											Logout
+										</Link>
+									</MenuItem>
+								</Menu>
+							</div>
+						) : (
+							<div>
+								<Link
+									href="/login"
+									color="inherit"
+									sx={{ mx: 1 }}
+									underline="none"
+								>
+									Login
+								</Link>
+								<Link
+									href="/register"
+									color="inherit"
+									sx={{ mx: 1 }}
+									underline="none"
+								>
+									Register
+								</Link>
+							</div>
+						)}
+					</Toolbar>
+				</AppBar>
+			</Box>
+		</>
 	);
 };
 

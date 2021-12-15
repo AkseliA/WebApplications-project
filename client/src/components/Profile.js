@@ -9,6 +9,7 @@ import {
 	CssBaseline,
 } from "@mui/material";
 import authUtils from "../auth/authUtils";
+import dateUtils from "../auth/dateUtils";
 import EditProfile from "./EditProfile";
 import DisplayProfile from "./DisplayProfile";
 
@@ -38,10 +39,10 @@ const Profile = () => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					bgcolor: "primary.main",
+					bgcolor: "background.paper",
 				}}
 			>
-				<Typography variant="h4" color="white" sx={{ mt: 1 }}>
+				<Typography variant="h4" sx={{ mt: 1 }}>
 					{editMode ? "My profile" : "Edit profile"}
 				</Typography>
 
@@ -73,8 +74,9 @@ const Profile = () => {
 							? "Click to edit profile"
 							: "Return to profile"}
 					</Button>
-					<Typography variant="body2" color="white">
-						This account was created {user.registerDate}
+					<Typography variant="body2" color="text.primary">
+						This account was created{" "}
+						{dateUtils.parseMongoDate(user.registerDate)}
 					</Typography>
 				</CardContent>
 			</Card>

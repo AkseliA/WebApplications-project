@@ -12,6 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
+import dateUtils from "../auth/dateUtils";
 import postUtils from "../auth/postUtils";
 import EditComment from "./EditComment";
 
@@ -68,14 +69,19 @@ const Comment = ({ user, comment }) => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					border: "1px solid gray",
+					border: "1px solid red",
 					position: "relative",
-					bgcolor: "red", //TODO COLOR
+					bgcolor: "background.paper",
 				}}
 			>
 				<Grid
 					container
-					sx={{ bgcolor: "green", m: 0, p: 0, width: "100%" }}
+					sx={{
+						m: 0,
+						p: 0,
+						width: "100%",
+						borderBottom: "1px solid red",
+					}}
 				>
 					<Grid item xs sx={{ p: 1 }} container>
 						<Grid
@@ -154,10 +160,7 @@ const Comment = ({ user, comment }) => {
 				</Grid>
 				{!editMode ? (
 					<>
-						<Grid
-							container
-							sx={{ bgcolor: "red", m: 0, p: 0, width: "100%" }}
-						>
+						<Grid container sx={{ m: 0, p: 0, width: "100%" }}>
 							<Grid item xs>
 								<Box
 									sx={{
@@ -221,7 +224,12 @@ const Comment = ({ user, comment }) => {
 
 				<Grid
 					container
-					sx={{ bgcolor: "green", m: 0, p: 0, width: "100%" }}
+					sx={{
+						borderTop: "1px solid red",
+						m: 0,
+						p: 0,
+						width: "100%",
+					}}
 				>
 					<Grid item xs sx={{ p: 1 }} container>
 						<Grid
@@ -233,7 +241,8 @@ const Comment = ({ user, comment }) => {
 						>
 							<Grid item xs>
 								<Typography variant="caption">
-									Posted : {comment.date}
+									Posted :
+									{dateUtils.parseMongoDate(comment.date)}
 								</Typography>
 							</Grid>
 						</Grid>
@@ -247,7 +256,10 @@ const Comment = ({ user, comment }) => {
 							<Grid item xs>
 								{comment.editDate && (
 									<Typography variant="caption">
-										Last edited: {comment.editDate}
+										Last edited:
+										{dateUtils.parseMongoDate(
+											comment.editDate
+										)}
 									</Typography>
 								)}
 							</Grid>

@@ -15,6 +15,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import postUtils from "../auth/postUtils";
+import dateUtils from "../auth/dateUtils";
 
 import EditPost from "./EditPost";
 
@@ -99,7 +100,7 @@ const Post = ({ post, user }) => {
 					alignItems: "center",
 					border: "1px solid red",
 					position: "relative",
-					bgcolor: "paleturquoise", //TODO COLOR
+					backgroundColor: "background.paper",
 				}}
 			>
 				<Grid
@@ -108,7 +109,7 @@ const Post = ({ post, user }) => {
 					justifyContent="space-between"
 					alignItems="center"
 					sx={{
-						bgcolor: "yellow",
+						borderBottom: "1px solid red",
 						m: 0,
 						p: 1,
 						width: "100%",
@@ -211,7 +212,7 @@ const Post = ({ post, user }) => {
 								<Box
 									component="div"
 									sx={{
-										bgcolor: "red",
+										border: "1px solid gray",
 										width: "100%",
 										overflow: "auto",
 										p: 0.5,
@@ -230,7 +231,12 @@ const Post = ({ post, user }) => {
 
 				<Grid
 					container
-					sx={{ bgcolor: "green", m: 0, p: 0, width: "100%" }}
+					sx={{
+						m: 0,
+						p: 0,
+						width: "100%",
+						borderTop: "1px solid red",
+					}}
 				>
 					<Grid item xs sx={{ p: 1 }} container>
 						<Grid
@@ -270,7 +276,8 @@ const Post = ({ post, user }) => {
 							</Grid>
 							<Grid item xs>
 								<Typography variant="caption">
-									Posted: {post.date}
+									Posted:
+									{dateUtils.parseMongoDate(post.date)}
 								</Typography>
 							</Grid>
 						</Grid>
@@ -285,7 +292,10 @@ const Post = ({ post, user }) => {
 							<Grid item xs>
 								{post.editDate && (
 									<Typography variant="caption">
-										Last edited: {post.editDate}
+										Last edited:{" "}
+										{dateUtils.parseMongoDate(
+											post.editDate
+										)}
 									</Typography>
 								)}
 							</Grid>

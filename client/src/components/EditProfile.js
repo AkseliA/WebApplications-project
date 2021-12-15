@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Box, TextField, Input } from "@mui/material";
+import { Button, Box, TextField, Input, CssBaseline } from "@mui/material";
 import authUtils from "../auth/authUtils";
 
 const EditProfile = ({ user }) => {
@@ -43,46 +43,57 @@ const EditProfile = ({ user }) => {
 	};
 
 	return (
-		<Box
-			component="form"
-			sx={{ mt: 2, width: "100%" }}
-			onSubmit={submitEdit}
-		>
-			<label htmlFor="fileInput">
-				<Input
-					type="file"
-					accept="image/*"
-					multiple={false}
-					sx={{ display: "none" }}
-					id="fileInput"
-					onChange={(e) => setNewPfp(e.target.files[0])}
-				></Input>
-				<Button variant="contained" component="span" sx={{ mb: 2.5 }}>
-					Add new avatar
-				</Button>
-			</label>
-			<TextField
-				name="bio"
-				label="New bio"
-				fullWidth
-				multiline
-				rows={2}
-				type="text"
-				id="bio"
-				sx={{ mb: 2 }}
-				value={newBio}
-				onChange={(e) => setNewBio(e.target.value)}
-			/>
+		<>
+			<CssBaseline />
 
-			<Button
-				type="submit"
-				fullWidth
-				variant="contained"
-				sx={{ mt: 3, mb: 2 }}
+			<Box
+				component="form"
+				sx={{
+					mt: 2,
+					width: "100%",
+				}}
+				onSubmit={submitEdit}
 			>
-				Submit
-			</Button>
-		</Box>
+				<label htmlFor="fileInput">
+					<Input
+						type="file"
+						accept="image/*"
+						multiple={false}
+						sx={{ display: "none" }}
+						id="fileInput"
+						onChange={(e) => setNewPfp(e.target.files[0])}
+					></Input>
+					<Button
+						variant="contained"
+						component="span"
+						sx={{ mb: 2.5 }}
+					>
+						Add new avatar
+					</Button>
+				</label>
+				<TextField
+					name="bio"
+					label="New bio"
+					fullWidth
+					multiline
+					rows={2}
+					type="text"
+					id="bio"
+					sx={{ mb: 2 }}
+					value={newBio}
+					onChange={(e) => setNewBio(e.target.value)}
+				/>
+
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					sx={{ mt: 3, mb: 2 }}
+				>
+					Submit
+				</Button>
+			</Box>
+		</>
 	);
 };
 

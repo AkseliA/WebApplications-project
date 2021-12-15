@@ -34,6 +34,7 @@ const CommentInput = ({ user, postId }) => {
 					flexDirection: "column",
 					alignItems: "center",
 					border: "1px solid gray",
+					backgroundColor: "background.paper",
 				}}
 			>
 				<Box

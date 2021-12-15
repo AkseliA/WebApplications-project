@@ -55,6 +55,7 @@ const PostInput = ({ user }) => {
 					flexDirection: "column",
 					alignItems: "center",
 					border: "1px solid gray",
+					backgroundColor: "background.paper",
 				}}
 			>
 				<Typography variant="h6" sx={{ mt: 3 }}>

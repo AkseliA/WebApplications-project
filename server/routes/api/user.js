@@ -12,7 +12,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 /* Register new user POST request */
-//TODO USERNAME validate
 router.post(
 	"/register",
 	body("email").escape(),
@@ -35,42 +34,50 @@ router.post(
 		if (!formValidate.validatePassword(req.body.password)) {
 			return res.status(400).json({
 				success: false,
-				msg: `Password is not strong enough`,
+				msg: `The password must contain at least the following: 8 letters, uppercase letter, lowercase letter, number and a special character.`,
 			});
 		}
 
-		//Check if the email is already registered
-		User.findOne({ email: req.body.email }, (err, user) => {
-			if (user) {
-				return res.status(403).json({
-					success: false,
-					msg: "Email already in use",
-				});
-			} else {
-				//Hash the password using bcrypt
-				bcrypt.genSalt(10, (err, salt) => {
-					bcrypt.hash(req.body.password, salt, (err, hash) => {
-						if (err) throw err;
-						User.create(
-							{
-								email: req.body.email,
-								password: hash,
-								username: req.body.username,
-								registerDate: req.body.date,
-							},
-							(err, result) => {
-								if (err) throw err;
-
-								return res.json({
-									success: true,
-									msg: "user registered",
-								});
-							}
-						);
+		//Check if the email or username is already registered using mongoose find and ($orr)
+		User.findOne(
+			{
+				$or: [
+					{ email: req.body.email },
+					{ username: req.body.username },
+				],
+			},
+			(err, user) => {
+				if (user) {
+					return res.status(403).json({
+						success: false,
+						msg: "Email or username already in use.",
 					});
-				});
+				} else {
+					//Hash the password using bcrypt
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(req.body.password, salt, (err, hash) => {
+							if (err) throw err;
+							User.create(
+								{
+									email: req.body.email,
+									password: hash,
+									username: req.body.username,
+									registerDate: req.body.date,
+								},
+								(err, result) => {
+									if (err) throw err;
+
+									return res.json({
+										success: true,
+										msg: "user registered.",
+									});
+								}
+							);
+						});
+					});
+				}
 			}
-		});
+		);
 	}
 );
 
