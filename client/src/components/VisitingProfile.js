@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import {
-	Button,
 	Card,
 	CardContent,
 	Avatar,
 	Typography,
 	Container,
 	CssBaseline,
+	Link,
+	Button,
 } from "@mui/material";
 import authUtils from "../auth/authUtils";
 import dateUtils from "../auth/dateUtils";
 import DisplayProfile from "./DisplayProfile";
 
-//TODO: error profile not found
 const VisitingProfile = () => {
 	const params = useParams();
 	const [user, setUser] = useState(null);
@@ -70,7 +70,14 @@ const VisitingProfile = () => {
 					</CardContent>
 				</Card>
 			) : (
-				<h1>ERROR: USER NOT FOUND</h1>
+				<>
+					<Typography variant="h4">{`Error: user '${params.username}' not found.`}</Typography>
+					<Button variant="contained" sx={{ mt: 2 }}>
+						<Link href="/" sx={{ color: "text.primary" }}>
+							Return
+						</Link>
+					</Button>
+				</>
 			)}
 		</Container>
 	);

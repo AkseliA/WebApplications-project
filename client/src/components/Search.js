@@ -105,7 +105,9 @@ const Search = () => {
 						</Stack>
 					</Box>
 				</Box>
-				{foundPosts && <Typography>Search results:</Typography>}
+				{foundPosts && (
+					<Typography textAlign={"left"}>Search results:</Typography>
+				)}
 				{foundPosts &&
 					foundPosts.map((post) => (
 						<div key={post._id}>

@@ -8,6 +8,7 @@ import {
 	Grid,
 	Link,
 } from "@mui/material";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -33,7 +34,6 @@ const Comment = ({ user, comment }) => {
 		}
 	}, [comment, user]);
 
-	//TODO: Confirm dialogs?
 	const deleteComment = () => {
 		postUtils.deleteComment(comment._id, (res) => {
 			if (res.success) {
@@ -72,6 +72,7 @@ const Comment = ({ user, comment }) => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
+					borderRadius: 1,
 					border: "1px solid #c0bcb8",
 					position: "relative",
 					bgcolor: "background.paper",

@@ -1,8 +1,5 @@
 import React from "react";
-import { Box, CssBaseline } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import { Box, CssBaseline, Stack, Paper, styled } from "@mui/material";
 
 //https://mui.com/components/stack/#main-content
 const DisplayProfile = ({ user }) => {
@@ -19,17 +16,19 @@ const DisplayProfile = ({ user }) => {
 			<Box component="div" sx={{ mt: 2, width: "100%" }}>
 				<Stack>
 					<label htmlFor="bio">Biography:</label>
-					<Item id="bio" sx={{ mb: 2 }}>
+					<Item id="bio" sx={{ mb: 2 }} variant="outlined">
 						{user.bio}
 					</Item>
 
 					<label htmlFor="username">Username:</label>
-					<Item id="username" sx={{ mb: 2 }}>
+					<Item id="username" sx={{ mb: 2 }} variant="outlined">
 						{user.username}
 					</Item>
 
 					<label htmlFor="email">Email:</label>
-					<Item id="email">{user.email}</Item>
+					<Item id="email" variant="outlined">
+						{user.email}
+					</Item>
 				</Stack>
 			</Box>
 		</>

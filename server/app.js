@@ -27,7 +27,7 @@ app.use(
 );
 
 //MongoDB setup
-const DB = "mongodb://localhost:27017/testdb"; //TODO MONGO-OSOITE
+const DB = "mongodb://localhost:27017/snippetapp";
 mongoose.connect(DB);
 mongoose.Promise = Promise;
 mongoose.connection.on("connected", () => {
@@ -41,7 +41,6 @@ require("./config/passport")(passport);
 app.use(passport.initialize()); /* passport for authorization */
 app.use(passport.session());
 
-//ROUTET KUNTOO
 app.use("/api/user", userApi);
 app.use("/api/post", postApi);
 app.use("/api/comment", commentApi);

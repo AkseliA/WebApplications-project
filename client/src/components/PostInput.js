@@ -81,6 +81,7 @@ const PostInput = ({ user }) => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
+					borderRadius: 1,
 					border: "1px solid #c0bcb8",
 					backgroundColor: "background.paper",
 				}}

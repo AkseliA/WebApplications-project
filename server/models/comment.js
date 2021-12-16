@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
 
-//TODO: Required fields?
 const commentSchema = mongoose.Schema(
 	{
-		user: { type: Object },
-		postId: { type: Object },
+		user: { type: Object, required: true },
+		postId: { type: Object, required: true },
 		date: { type: Date },
 		editDate: { type: Date },
-		content: { type: String },
+		content: { type: String, required: true },
 		voteCount: { type: Number, default: 0 },
 		voters: { type: Array },
 	},

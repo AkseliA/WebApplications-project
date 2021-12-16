@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-
 import { useLocation } from "react-router";
-//Mui imports
-import AppBar from "@mui/material/AppBar";
-import Link from "@mui/material/Link";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import { CssBaseline } from "@mui/material";
 
+import {
+	CssBaseline,
+	AppBar,
+	Link,
+	Box,
+	Toolbar,
+	Typography,
+	IconButton,
+	MenuItem,
+	Menu,
+} from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SearchIcon from "@mui/icons-material/Search";
 
 import authUtils from "../auth/authUtils";
+
 //Used a mui template appbar:
 //https://mui.com/components/app-bar/#app-bar-with-menu
 const Header = () => {
@@ -59,7 +60,7 @@ const Header = () => {
 								color="text.primary"
 								underline="none"
 							>
-								MY APP
+								SnippetApp
 							</Link>
 						</Typography>
 						<Link href="/search">

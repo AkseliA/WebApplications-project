@@ -9,7 +9,6 @@ const formValidate = require("../../auth/formValidate");
 const bcrypt = require("bcryptjs");
 const { update } = require("../../models/comment");
 
-//TODO: userid from after passport auth
 router.post(
 	"/add",
 	passport.authenticate("jwt", { session: false }),

@@ -15,12 +15,11 @@ import hljs from "highlight.js";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+
 import postUtils from "../auth/postUtils";
 import dateUtils from "../auth/dateUtils";
-
 import EditPost from "./EditPost";
 
-//TODO POST AVATAR, EDIT/ DELETE Button vbisibility, vote color(success^, red v)
 //post and user as props, if user equals post creator -> visible edit/delete buttons
 const Post = ({ post, user }) => {
 	//For handling menu clicks
@@ -101,6 +100,7 @@ const Post = ({ post, user }) => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
+					borderRadius: 1,
 					border: "1px solid #c0bcb8",
 					position: "relative",
 					backgroundColor: "background.paper",

@@ -1,6 +1,5 @@
 import React from "react";
-import { Snackbar, Alert } from "@mui/material/";
-import { CssBaseline } from "@mui/material";
+import { Snackbar, Alert, CssBaseline } from "@mui/material/";
 
 //This component is built using mui snackbar template
 //https://mui.com/components/snackbars/#positioned-snackbars

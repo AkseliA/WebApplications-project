@@ -6,8 +6,6 @@ import postUtils from "../auth/postUtils";
 import PostInput from "./PostInput";
 import Post from "./Post";
 
-//TODO: FORM VALIDATION!
-
 const Home = () => {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [user, setUser] = useState(null);

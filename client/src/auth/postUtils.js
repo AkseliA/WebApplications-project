@@ -74,7 +74,6 @@ module.exports.addPost = function (data, callback) {
 	}
 };
 
-//TODO check that user trying to delete has created the comment
 module.exports.deleteComment = function (commentId, callback) {
 	let jwt = localStorage.getItem("JWT");
 	fetch("/api/comment/deleteSingle", {
@@ -92,7 +91,6 @@ module.exports.deleteComment = function (commentId, callback) {
 		});
 };
 
-//TODO check that user trying to delete has created the post
 //This function deletes the post and all of its comments.
 //Both deletes are handled server side
 module.exports.deletePost = function (postId, callback) {

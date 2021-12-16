@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 const router = require("../routes/api/post");
 
-//TODO: Required fields?
 const postSchema = mongoose.Schema(
 	{
-		user: { type: Object },
+		user: { type: Object, required: true },
 		date: { type: Date },
 		editDate: { type: Date },
-		title: { type: String },
-		content: { type: String },
+		title: { type: String, required: true },
+		content: { type: String, required: true },
 		codeSnippet: { type: String },
 		voteCount: { type: Number, default: 0 },
 		voters: { type: Array },
