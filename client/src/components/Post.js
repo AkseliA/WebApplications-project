@@ -32,7 +32,14 @@ const Post = ({ post, user }) => {
 	//Also initializes highlight.js for highlighting any <pre><code></pre></code> blocks.
 	useEffect(() => {
 		if (post.codeSnippet) {
-			hljs.highlightElement(document.querySelector("pre code"));
+			//Select any unhighlighted elements and highlight them´
+			const elements = document.querySelectorAll("pre code");
+			elements.forEach((element) => {
+				//Highlight if classlist doesn't contain "hljs"
+				if (!element.classList.contains("hljs")) {
+					hljs.highlightElement(element);
+				}
+			});
 		}
 
 		if (user && post.voters.length !== 0) {
