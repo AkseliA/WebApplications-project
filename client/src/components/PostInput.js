@@ -8,13 +8,20 @@ import {
 	Checkbox,
 	FormControlLabel,
 } from "@mui/material";
+import AlertSnackbar from "./AlertSnackbar";
 import postUtils from "../auth/postUtils";
+import validateInput from "../auth/validateInput";
 
 const PostInput = ({ user }) => {
 	const [checked, setChecked] = useState(false);
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [codeSnippet, setCodeSnippet] = useState("");
+	const [snackbarProps, setSnackbarProps] = useState({ isOpen: false });
+
+	const onSnackbarClose = () => {
+		setSnackbarProps({ isOpen: false });
+	};
 
 	//Insert indent (4 spaces) when tab is pressed inside code field
 	const handleTab = (e) => {
@@ -28,6 +35,7 @@ const PostInput = ({ user }) => {
 	// POST request to server
 	const submitPost = (e) => {
 		e.preventDefault();
+
 		const newPost = {
 			user: user,
 			title: title,
@@ -35,26 +43,45 @@ const PostInput = ({ user }) => {
 			codeSnippet: codeSnippet,
 			date: new Date(Date.now()),
 		};
-		postUtils.addPost(newPost, (res) => {
-			if (res.success) {
-				window.location.href = "/";
-			}
-		});
+		let result = validateInput.validatePostInput(newPost);
 
-		setTitle("");
-		setContent("");
+		if (result.success) {
+			postUtils.addPost(newPost, (res) => {
+				if (res.success) {
+					setTitle("");
+					setContent("");
+					window.location.href = "/";
+				}
+			});
+		} else {
+			//Validation failed -> inform user
+			setSnackbarProps({
+				isOpen: true,
+				duration: 3000,
+				alertType: "error",
+				msg: result.msg,
+			});
+		}
 	};
 	return (
 		<>
 			<CssBaseline />
-
+			{snackbarProps.isOpen && (
+				<AlertSnackbar
+					duration={snackbarProps.duration}
+					alertType={snackbarProps.alertType}
+					msg={snackbarProps.msg}
+					isOpen={snackbarProps.isOpen}
+					onClose={onSnackbarClose}
+				/>
+			)}
 			<Box
 				sx={{
 					mb: 8,
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					border: "1px solid gray",
+					border: "1px solid #c0bcb8",
 					backgroundColor: "background.paper",
 				}}
 			>

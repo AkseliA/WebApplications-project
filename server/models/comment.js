@@ -40,8 +40,7 @@ module.exports.editComment = function (updatedComment, callback) {
 		update,
 		{ new: true },
 		(err, result) => {
-			if (err) throw err;
-			callback(null, result);
+			callback(err, result);
 		}
 	);
 };

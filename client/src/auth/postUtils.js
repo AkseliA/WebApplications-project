@@ -26,6 +26,7 @@ module.exports.fetchComments = function (postId, callback) {
 };
 
 module.exports.addComment = function (data, callback) {
+	let jwt = localStorage.getItem("JWT");
 	let newComment = {
 		user: data.user,
 		postId: data.postId,
@@ -34,7 +35,10 @@ module.exports.addComment = function (data, callback) {
 
 	fetch("/api/comment/add", {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${jwt}`,
+		},
 		body: JSON.stringify(newComment),
 		mode: "cors",
 	})
@@ -72,10 +76,12 @@ module.exports.addPost = function (data, callback) {
 
 //TODO check that user trying to delete has created the comment
 module.exports.deleteComment = function (commentId, callback) {
+	let jwt = localStorage.getItem("JWT");
 	fetch("/api/comment/deleteSingle", {
 		method: "DELETE",
 		headers: {
 			"Content-Type": "application/json",
+			Authorization: `Bearer ${jwt}`,
 		},
 		body: JSON.stringify({ _id: commentId }),
 		mode: "cors",
@@ -90,10 +96,12 @@ module.exports.deleteComment = function (commentId, callback) {
 //This function deletes the post and all of its comments.
 //Both deletes are handled server side
 module.exports.deletePost = function (postId, callback) {
+	let jwt = localStorage.getItem("JWT");
 	fetch("/api/post/del", {
 		method: "DELETE",
 		headers: {
 			"Content-Type": "application/json",
+			Authorization: `Bearer ${jwt}`,
 		},
 		body: JSON.stringify({ _id: postId }),
 		mode: "cors",

@@ -76,7 +76,7 @@ const Search = () => {
 						backgroundColor: "background.paper",
 						p: 1,
 						borderRadius: 1,
-						border: "1px solid red",
+						border: "1px solid #c0bcb8",
 					}}
 				>
 					<Box

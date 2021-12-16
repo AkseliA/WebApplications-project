@@ -24,7 +24,7 @@ router.post(
 
 		Post.postNewPost(newPost, (err) => {
 			if (err) {
-				return res.json({ success: false, msg: "Error posting" });
+				return res.status(404).json({ success: false, err });
 			} else {
 				return res.json({ success: true, msg: "Post posted" });
 			}
@@ -36,10 +36,8 @@ router.post(
 router.get("/fetch", (req, res, next) => {
 	Post.fetchAllPosts((err, posts) => {
 		if (err) {
-			return res.json({ success: false, err });
-		}
-
-		if (posts) {
+			return res.status(404).json({ success: false, err });
+		} else if (posts) {
 			return res.json({ success: true, posts });
 		} else {
 			return res.json({ success: false, msg: "Could not fetch posts" });
@@ -52,10 +50,8 @@ router.get("/fetch/:postId", (req, res, next) => {
 	let postId = req.params.postId;
 	Post.fetchSinglePost(postId, (err, post) => {
 		if (err) {
-			return res.json({ success: false, err });
-		}
-
-		if (post) {
+			return res.status(404).json({ success: false, err });
+		} else if (post) {
 			return res.json({ success: true, post });
 		} else {
 			return res.json({ success: false, msg: "Could not fetch post" });
@@ -64,26 +60,30 @@ router.get("/fetch/:postId", (req, res, next) => {
 });
 
 // DELETE post based on its mongodb _id (Also removes related comments)
-router.delete("/del", (req, res) => {
-	const postId = req.body._id;
-	Post.deletePost(postId, (err) => {
-		if (err) {
-			return res.json({ success: false, msg: err });
-		} else {
-			//Delete comments
-			Comment.deletePostComments(postId, (err, result) => {
-				if (err) {
-					return res.json({ success: false, msg: err });
-				} else if (result) {
-					return res.json({
-						success: true,
-						msg: "Deleted post and its comments",
-					});
-				}
-			});
-		}
-	});
-});
+router.delete(
+	"/del",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const postId = req.body._id;
+		Post.deletePost(postId, (err) => {
+			if (err) {
+				return res.status(404).json({ success: false, err });
+			} else {
+				//Delete comments
+				Comment.deletePostComments(postId, (err, result) => {
+					if (err) {
+						return res.status(404).json({ success: false, err });
+					} else if (result) {
+						return res.json({
+							success: true,
+							msg: "Deleted post and its comments",
+						});
+					}
+				});
+			}
+		});
+	}
+);
 
 router.post(
 	"/vote",
@@ -96,7 +96,7 @@ router.post(
 		};
 		Post.adjustVote(data, (result, err) => {
 			if (err) {
-				return res.json({ success: false, err });
+				return res.status(404).json({ success: false, err });
 			} else {
 				return res.json({ success: true, msg: "Vote successful" });
 			}
@@ -117,7 +117,9 @@ router.post(
 			editDate: req.body.editDate,
 		};
 		Post.editPost(updatedPost, (err, result) => {
-			if (result) {
+			if (err) {
+				return res.status(404).json({ success: false, err });
+			} else if (result) {
 				return res.json({ success: true, result });
 			} else {
 				return res.json({ success: false, msg: "Failed to edit post" });

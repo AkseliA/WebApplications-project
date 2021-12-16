@@ -12,7 +12,6 @@ const EditProfile = ({ user }) => {
 
 	const submitEdit = (e) => {
 		e.preventDefault();
-		console.log(newPfp);
 
 		//The following fetch sends editedUser as formData
 		let formData = new FormData();

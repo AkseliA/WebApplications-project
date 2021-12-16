@@ -19,7 +19,6 @@ const Profile = () => {
 
 	//useEffect for getting the current profile
 	useEffect(() => {
-		console.log("loaded");
 		setUser(authUtils.getCurrentUser());
 	}, []);
 
@@ -27,7 +26,6 @@ const Profile = () => {
 		setEditMode(editMode ? false : true);
 	};
 
-	//TODO: WHEN PROFILE IS EDITED REMEMBER TO UPDATE LOCALSTORAGE
 	//By default this component displays user profile. When edit button is clicked
 	//a component is loaded so that editing is possible
 	return (

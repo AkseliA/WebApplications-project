@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Container, List, CssBaseline } from "@mui/material";
+import { Container, List, CssBaseline, ListSubheader } from "@mui/material";
 import authUtils from "../auth/authUtils";
 import postUtils from "../auth/postUtils";
 import Post from "./Post";
@@ -22,7 +22,6 @@ const PostWithComments = () => {
 			}
 		});
 		//Fetch post related comments
-
 		postUtils.fetchComments(params.id, (res) => {
 			if (res.success) {
 				setComments(res.comments);
@@ -43,7 +42,24 @@ const PostWithComments = () => {
 				}}
 			>
 				{post && <Post post={post} user={user}></Post>}
-				<List sx={{ width: "100%", pb: 0 }}>
+				<List
+					sx={{ width: "100%", pb: 0 }}
+					aria-labelledby="comment-list-header"
+					subheader={
+						<ListSubheader
+							element="div"
+							id="comment-list-header"
+							sx={{
+								backgroundColor: "transparent",
+								textAlign: "left",
+								color: "text.primary",
+								pl: 0,
+							}}
+						>
+							Comments:
+						</ListSubheader>
+					}
+				>
 					{comments &&
 						comments.map((comment) => (
 							<Comment

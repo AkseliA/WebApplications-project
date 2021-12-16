@@ -105,7 +105,6 @@ module.exports.editPost = function (updatedPost, callback) {
 		editDate: updatedPost.editDate,
 	};
 	Post.findByIdAndUpdate(postId, update, { new: true }, (err, result) => {
-		if (err) throw err;
-		callback(null, result);
+		callback(err, result);
 	});
 };

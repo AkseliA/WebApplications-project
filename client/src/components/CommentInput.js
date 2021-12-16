@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { Button, TextField, Box, CssBaseline } from "@mui/material";
+import AlertSnackbar from "./AlertSnackbar";
 import postUtils from "../auth/postUtils";
+import { validateCommentInput } from "../auth/validateInput";
 
 const CommentInput = ({ user, postId }) => {
 	const [content, setContent] = useState("");
+	const [snackbarProps, setSnackbarProps] = useState({ isOpen: false });
+
+	const onSnackbarClose = () => {
+		setSnackbarProps({ isOpen: false });
+	};
 
 	// POST request to server
 	const submitComment = (e) => {
@@ -13,27 +20,46 @@ const CommentInput = ({ user, postId }) => {
 			postId: postId,
 			content: content,
 		};
-		console.log(newComment);
-		postUtils.addComment(newComment, (res) => {
-			if (res.success) {
-				console.log(res);
-				window.location.reload();
-			}
-		});
-
+		//Validate comment input before posting
+		let result = validateCommentInput(newComment);
+		if (result.success) {
+			postUtils.addComment(newComment, (res) => {
+				if (res.success) {
+					console.log(res);
+					window.location.reload();
+				}
+			});
+		}
+		//Else display a snackbar alert
+		else {
+			setSnackbarProps({
+				isOpen: true,
+				duration: 3000,
+				alertType: "error",
+				msg: result.msg,
+			});
+		}
 		setContent("");
 	};
 	return (
 		<>
 			<CssBaseline />
-
+			{snackbarProps.isOpen && (
+				<AlertSnackbar
+					duration={snackbarProps.duration}
+					alertType={snackbarProps.alertType}
+					msg={snackbarProps.msg}
+					isOpen={snackbarProps.isOpen}
+					onClose={onSnackbarClose}
+				/>
+			)}
 			<Box
 				sx={{
 					mb: 8,
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					border: "1px solid gray",
+					border: "1px solid #c0bcb8",
 					backgroundColor: "background.paper",
 				}}
 			>

@@ -7,29 +7,33 @@ var passport = require("passport");
 const formValidate = require("../../auth/formValidate");
 const bcrypt = require("bcryptjs");
 
-router.post("/add", (req, res, next) => {
-	let currentDate = new Date(Date.now());
-	let newComment = new Comment({
-		user: req.body.user,
-		postId: req.body.postId,
-		date: currentDate,
-		content: req.body.content,
-	});
-	Comment.postNewComment(newComment, (err) => {
-		if (err) {
-			return res.json({ success: false, msg: "Error posting" });
-		} else {
-			return res.json({ success: true, msg: "Comment posted" });
-		}
-	});
-});
+router.post(
+	"/add",
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		let currentDate = new Date(Date.now());
+		let newComment = new Comment({
+			user: req.body.user,
+			postId: req.body.postId,
+			date: currentDate,
+			content: req.body.content,
+		});
+		Comment.postNewComment(newComment, (err) => {
+			if (err) {
+				return res.status(404).json({ success: false, err });
+			} else {
+				return res.json({ success: true, msg: "Comment posted" });
+			}
+		});
+	}
+);
 
 /* GET request for fetching all comments of a post */
 router.get("/fetch/:id", (req, res, next) => {
 	let postId = req.params.id;
 	Comment.fetchPostComments(postId, (err, comments) => {
-		if (err) throw err;
-		if (comments) {
+		if (err) return res.status(404).json({ success: false, err });
+		else if (comments) {
 			return res.json({ success: true, comments });
 		} else {
 			return res.json({
@@ -40,26 +44,20 @@ router.get("/fetch/:id", (req, res, next) => {
 	});
 });
 
-router.delete("/deleteAll", (req, res, next) => {
-	Comment.deletePostComments(req.body.postId, (err, result) => {
-		if (err) {
-			return res.json({ success: false, msg: err });
-		} else if (result) {
-			return res.json({ success: true, msg: result.deletedCount });
-		}
-	});
-});
-
-router.delete("/deleteSingle", (req, res, next) => {
-	const commentId = req.body._id;
-	Comment.deleteSingle(commentId, (err) => {
-		if (err) {
-			return res.json({ success: false, msg: err });
-		} else {
-			return res.json({ success: true, msg: "Comment deleted" });
-		}
-	});
-});
+router.delete(
+	"/deleteSingle",
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		const commentId = req.body._id;
+		Comment.deleteSingle(commentId, (err) => {
+			if (err) {
+				return res.status(404).json({ success: false, err });
+			} else {
+				return res.json({ success: true, msg: "Comment deleted" });
+			}
+		});
+	}
+);
 
 router.post(
 	"/edit/",
@@ -71,7 +69,9 @@ router.post(
 			editDate: req.body.editDate,
 		};
 		Comment.editComment(updatedComment, (err, result) => {
-			if (result) {
+			if (err) {
+				if (err) return res.status(404).json({ success: false, err });
+			} else if (result) {
 				return res.json({ success: true, result });
 			} else {
 				return res.json({
@@ -94,7 +94,7 @@ router.post(
 		};
 		Comment.adjustVote(data, (result, err) => {
 			if (err) {
-				return res.json({ success: false, err });
+				return res.status(404).json({ success: false, err });
 			} else {
 				return res.json({ success: true, msg: "Vote successful" });
 			}

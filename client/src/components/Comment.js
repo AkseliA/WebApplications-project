@@ -140,30 +140,36 @@ const Comment = ({ user, comment }) => {
 						>
 							<Grid item>
 								<Grid item xs container direction="row">
-									<Grid item xs>
-										<IconButton
-											onClick={editComment}
-											color="inherit"
-											display="block"
-											aria-controls="edit-comment"
-											aria-label="edit"
-											sx={{ p: 0 }}
-										>
-											<EditIcon fontSize="small" />
-										</IconButton>
-									</Grid>
-									<Grid item xs>
-										<IconButton
-											onClick={(e) => deleteComment(e)}
-											color="inherit"
-											display="block"
-											aria-controls="del-comment"
-											aria-label="delete"
-											sx={{ p: 0 }}
-										>
-											<DeleteIcon fontSize="small" />
-										</IconButton>
-									</Grid>
+									{user && user._id === comment.user._id && (
+										<>
+											<Grid item xs>
+												<IconButton
+													onClick={editComment}
+													color="inherit"
+													display="block"
+													aria-controls="edit-comment"
+													aria-label="edit"
+													sx={{ p: 0 }}
+												>
+													<EditIcon fontSize="small" />
+												</IconButton>
+											</Grid>
+											<Grid item xs>
+												<IconButton
+													onClick={(e) =>
+														deleteComment(e)
+													}
+													color="inherit"
+													display="block"
+													aria-controls="del-comment"
+													aria-label="delete"
+													sx={{ p: 0 }}
+												>
+													<DeleteIcon fontSize="small" />
+												</IconButton>
+											</Grid>
+										</>
+									)}
 								</Grid>
 							</Grid>
 						</Grid>

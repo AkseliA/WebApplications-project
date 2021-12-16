@@ -25,8 +25,7 @@ module.exports.fetchUserByUsername = function (username, callback) {
 //compare given password to hashed password
 module.exports.authenticatePassword = function (candidatePassword, hash, cb) {
 	bcrypt.compare(candidatePassword, hash, (err, matchResult) => {
-		if (err) throw err;
-		cb(null, matchResult);
+		cb(err, matchResult);
 	});
 };
 
@@ -40,7 +39,6 @@ module.exports.updateUser = function (updatedUser, callback) {
 	};
 
 	User.findByIdAndUpdate(userId, update, { new: true }, (err, result) => {
-		if (err) throw err;
-		callback(null, result);
+		callback(err, result);
 	});
 };

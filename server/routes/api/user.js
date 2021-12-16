@@ -47,7 +47,9 @@ router.post(
 				],
 			},
 			(err, user) => {
-				if (user) {
+				if (err) {
+					return res.status(404).json({ success: false, err });
+				} else if (user) {
 					return res.status(403).json({
 						success: false,
 						msg: "Email or username already in use.",
@@ -56,23 +58,32 @@ router.post(
 					//Hash the password using bcrypt
 					bcrypt.genSalt(10, (err, salt) => {
 						bcrypt.hash(req.body.password, salt, (err, hash) => {
-							if (err) throw err;
-							User.create(
-								{
-									email: req.body.email,
-									password: hash,
-									username: req.body.username,
-									registerDate: req.body.date,
-								},
-								(err, result) => {
-									if (err) throw err;
-
-									return res.json({
-										success: true,
-										msg: "user registered.",
-									});
-								}
-							);
+							if (err) {
+								return res
+									.status(404)
+									.json({ success: false, err });
+							} else {
+								User.create(
+									{
+										email: req.body.email,
+										password: hash,
+										username: req.body.username,
+										registerDate: req.body.date,
+									},
+									(err, result) => {
+										if (err) {
+											return res
+												.status(404)
+												.json({ success: false, err });
+										} else {
+											return res.json({
+												success: true,
+												msg: "user registered.",
+											});
+										}
+									}
+								);
+							}
 						});
 					});
 				}
@@ -96,9 +107,10 @@ router.post(
 
 		//Fetch user from the database
 		User.fetchUserByEmail(email, (err, user) => {
-			if (err) throw err;
-			//user not found
-			if (!user) {
+			if (err) {
+				return res.status(404).json({ success: false, err });
+				//User not found
+			} else if (!user) {
 				return res.json({ success: false, msg: "Invalid credentials" });
 			}
 
@@ -107,7 +119,9 @@ router.post(
 				password,
 				user.password,
 				(err, matchResult) => {
-					if (err) throw err;
+					if (err) {
+						return res.status(404).json({ success: false, err });
+					}
 
 					//Create a jwt
 					if (matchResult) {
@@ -117,9 +131,14 @@ router.post(
 						jwt.sign(
 							jwtPayLoad,
 							process.env.SECRET,
-							{ expiresIn: 600 },
+							{ expiresIn: 3600 }, //expires after 1 hour
 							(err, token) => {
-								res.json({
+								if (err) {
+									return res
+										.status(404)
+										.json({ success: false, err });
+								}
+								return res.json({
 									success: true,
 									token,
 								});
@@ -147,8 +166,9 @@ router.get(
 		let userEmail = req.user.email;
 
 		User.fetchUserByEmail(userEmail, (err, user) => {
-			if (err) throw err;
-			if (user) {
+			if (err) {
+				return res.status(404).json({ success: false, err });
+			} else if (user) {
 				return res.json({ success: true, user });
 			} else {
 				return res.json({
@@ -165,7 +185,9 @@ router.get("/profile/:username", (req, res, next) => {
 	let username = req.params.username;
 
 	User.fetchUserByUsername(username, (err, user) => {
-		if (err) throw err;
+		if (err) {
+			return res.status(404).json({ success: false, err });
+		}
 		if (user) {
 			return res.json({ success: true, user });
 		} else {
@@ -194,7 +216,9 @@ router.post(
 				encoding: req.file.encoding,
 			});
 			Avatar.addNewAvatar(newAvatar, (err) => {
-				if (err) throw err;
+				if (err) {
+					return res.status(404).json({ success: false, err });
+				}
 			});
 			var updatedUser = new User({
 				_id: req.user._id,
@@ -210,6 +234,9 @@ router.post(
 		}
 		//Then the user is updated
 		User.updateUser(updatedUser, (err, result) => {
+			if (err) {
+				return res.status(404).json({ success: false, err });
+			}
 			if (result) {
 				return res.json({ success: true, result });
 			} else {
@@ -225,10 +252,9 @@ router.post(
 //Get avatar image using the _imageID as req parameter :id
 router.get("/avatar/:id", (req, res) => {
 	let avatarId = req.params.id;
-	console.log(avatarId);
 	Avatar.getAvatar(avatarId, (err, avatar) => {
 		if (err) {
-			return res.json({ success: false, err });
+			return res.status(404).json({ success: false, err });
 		}
 		if (!avatar) {
 			return res.json({ success: false, msg: "Could not fetch image" });
