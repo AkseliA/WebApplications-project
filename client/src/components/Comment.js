@@ -6,6 +6,7 @@ import {
 	CssBaseline,
 	IconButton,
 	Grid,
+	Link,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -26,7 +27,9 @@ const Comment = ({ user, comment }) => {
 			const match = comment.voters.filter(
 				(vote) => vote.userId === user._id
 			);
-			setHasVoted(match[0].voteType);
+			if (match.length > 0) {
+				setHasVoted(match[0].voteType);
+			}
 		}
 	}, [comment, user]);
 
@@ -69,7 +72,7 @@ const Comment = ({ user, comment }) => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					border: "1px solid red",
+					border: "1px solid #c0bcb8",
 					position: "relative",
 					bgcolor: "background.paper",
 				}}
@@ -80,7 +83,7 @@ const Comment = ({ user, comment }) => {
 						m: 0,
 						p: 0,
 						width: "100%",
-						borderBottom: "1px solid red",
+						borderBottom: "1px solid #c0bcb8",
 					}}
 				>
 					<Grid item xs sx={{ p: 1 }} container>
@@ -110,12 +113,20 @@ const Comment = ({ user, comment }) => {
 										/>
 									</Grid>
 									<Grid item xs>
-										<Typography
-											variant="body"
-											sx={{ pl: 1 }}
+										<Link
+											href={
+												"/profile/" +
+												comment.user.username
+											}
+											color="text.primary"
 										>
-											{comment.user.username}
-										</Typography>
+											<Typography
+												variant="body"
+												sx={{ pl: 1 }}
+											>
+												{comment.user.username}
+											</Typography>
+										</Link>
 									</Grid>
 								</Grid>
 							</Grid>
@@ -225,7 +236,7 @@ const Comment = ({ user, comment }) => {
 				<Grid
 					container
 					sx={{
-						borderTop: "1px solid red",
+						borderTop: "1px solid #c0bcb8",
 						m: 0,
 						p: 0,
 						width: "100%",
@@ -241,7 +252,7 @@ const Comment = ({ user, comment }) => {
 						>
 							<Grid item xs>
 								<Typography variant="caption">
-									Posted :
+									Posted:{" "}
 									{dateUtils.parseMongoDate(comment.date)}
 								</Typography>
 							</Grid>
@@ -256,7 +267,7 @@ const Comment = ({ user, comment }) => {
 							<Grid item xs>
 								{comment.editDate && (
 									<Typography variant="caption">
-										Last edited:
+										Last edited:{" "}
 										{dateUtils.parseMongoDate(
 											comment.editDate
 										)}

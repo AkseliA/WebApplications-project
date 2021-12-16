@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import PostWithComments from "./components/PostWithComments";
 import Search from "./components/Search";
 import theme from "./styles/theme";
+import VisitingProfile from "./components/VisitingProfile";
 
 function App() {
 	return (
@@ -34,6 +35,11 @@ function App() {
 							exact={true}
 							path="/profile"
 							element={<Profile />}
+						></Route>
+						<Route
+							exact={true}
+							path="/profile/:username"
+							element={<VisitingProfile />}
 						></Route>
 						<Route
 							path="/post/:id"

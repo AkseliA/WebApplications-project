@@ -160,6 +160,23 @@ router.get(
 	}
 );
 
+//GET single user information using username
+router.get("/profile/:username", (req, res, next) => {
+	let username = req.params.username;
+
+	User.fetchUserByUsername(username, (err, user) => {
+		if (err) throw err;
+		if (user) {
+			return res.json({ success: true, user });
+		} else {
+			return res.json({
+				success: false,
+				msg: "Could not fetch user",
+			});
+		}
+	});
+});
+
 //passport protected POST request used to update current user
 //Uses multer for image handling: https://github.com/expressjs/multer
 router.post(

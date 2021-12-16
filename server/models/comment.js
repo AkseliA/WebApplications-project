@@ -60,6 +60,7 @@ module.exports.deletePostComments = function (postId, callback) {
 module.exports.adjustVote = function (data, callback) {
 	const commentId = data.comment._id;
 	const voter = { userId: data.userId, voteType: data.voteType };
+	let update;
 
 	//Comment has voters/votes
 	if (data.comment.voters.length !== 0) {
@@ -89,12 +90,19 @@ module.exports.adjustVote = function (data, callback) {
 					voters: voter,
 				};
 				break;
+				//Unique voter votes a comment that has voters already
+			} else {
+				console.log("Unique voter");
+				update = {
+					$inc: { voteCount: data.voteType },
+					$push: { voters: voter },
+				};
 			}
 		}
 		//First voter
 	} else {
 		//Adjust votecount ($inc) and push new voter to voters ($push)
-		console.log("Unique voter");
+		console.log("First voter");
 		update = {
 			$inc: { voteCount: data.voteType },
 			$push: { voters: voter },

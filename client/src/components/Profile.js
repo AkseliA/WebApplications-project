@@ -48,7 +48,6 @@ const Profile = () => {
 
 				<Avatar
 					id="profilePicture"
-					alt={user.username}
 					src={"/api/user/avatar/" + user.avatar}
 					sx={{
 						width: 150,

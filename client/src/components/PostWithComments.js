@@ -43,7 +43,7 @@ const PostWithComments = () => {
 				}}
 			>
 				{post && <Post post={post} user={user}></Post>}
-				<List sx={{ width: "100%" }}>
+				<List sx={{ width: "100%", pb: 0 }}>
 					{comments &&
 						comments.map((comment) => (
 							<Comment

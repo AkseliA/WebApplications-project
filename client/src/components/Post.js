@@ -8,6 +8,7 @@ import {
 	CssBaseline,
 	IconButton,
 	Avatar,
+	Link,
 } from "@mui/material";
 import hljs from "highlight.js";
 
@@ -39,7 +40,9 @@ const Post = ({ post, user }) => {
 			const match = post.voters.filter(
 				(vote) => vote.userId === user._id
 			);
-			setHasVoted(match[0].voteType);
+			if (match.length > 0) {
+				setHasVoted(match[0].voteType);
+			}
 		}
 	}, [post, user]);
 
@@ -98,7 +101,7 @@ const Post = ({ post, user }) => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					border: "1px solid red",
+					border: "1px solid #c0bcb8",
 					position: "relative",
 					backgroundColor: "background.paper",
 				}}
@@ -109,7 +112,7 @@ const Post = ({ post, user }) => {
 					justifyContent="space-between"
 					alignItems="center"
 					sx={{
-						borderBottom: "1px solid red",
+						borderBottom: "1px solid #c0bcb8",
 						m: 0,
 						p: 1,
 						width: "100%",
@@ -212,10 +215,9 @@ const Post = ({ post, user }) => {
 								<Box
 									component="div"
 									sx={{
-										border: "1px solid gray",
+										border: "1px solid #c0bcb8",
 										width: "100%",
 										overflow: "auto",
-										p: 0.5,
 									}}
 								>
 									<pre style={{ margin: 0 }}>
@@ -235,7 +237,7 @@ const Post = ({ post, user }) => {
 						m: 0,
 						p: 0,
 						width: "100%",
-						borderTop: "1px solid red",
+						borderTop: "1px solid #c0bcb8",
 					}}
 				>
 					<Grid item xs sx={{ p: 1 }} container>
@@ -265,18 +267,25 @@ const Post = ({ post, user }) => {
 										/>
 									</Grid>
 									<Grid item xs>
-										<Typography
-											variant="body"
-											sx={{ pl: 1 }}
+										<Link
+											href={
+												"/profile/" + post.user.username
+											}
+											color="text.primary"
 										>
-											{post.user.username}
-										</Typography>
+											<Typography
+												variant="body"
+												sx={{ pl: 1 }}
+											>
+												{post.user.username}
+											</Typography>
+										</Link>
 									</Grid>
 								</Grid>
 							</Grid>
 							<Grid item xs>
 								<Typography variant="caption">
-									Posted:
+									Posted:{" "}
 									{dateUtils.parseMongoDate(post.date)}
 								</Typography>
 							</Grid>

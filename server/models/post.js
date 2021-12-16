@@ -72,19 +72,25 @@ module.exports.adjustVote = function (data, callback) {
 					voters: voter,
 				};
 				break;
+				//Unique voter votes a post that has voters already
+			} else {
+				console.log("Unique voter");
+				update = {
+					$inc: { voteCount: data.voteType },
+					$push: { voters: voter },
+				};
 			}
 		}
 
 		//Post has no voters (or votes)
 	} else {
 		//Adjust votecount and add user to voters
-		console.log("Unique vote");
+		console.log("first vote");
 		update = {
 			$inc: { voteCount: data.voteType },
 			$push: { voters: voter },
 		};
 	}
-
 	Post.findByIdAndUpdate(postId, update, { new: true }, (res, err) => {
 		callback(err, res);
 	});

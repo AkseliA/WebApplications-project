@@ -51,3 +51,11 @@ module.exports.isLoggedIn = function () {
 		return false;
 	}
 };
+
+module.exports.getUserByUsername = function (username, callback) {
+	fetch("/api/user/profile/" + username)
+		.then((response) => response.json())
+		.then((data) => {
+			callback(data);
+		});
+};

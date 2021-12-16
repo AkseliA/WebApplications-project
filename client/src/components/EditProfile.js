@@ -54,23 +54,16 @@ const EditProfile = ({ user }) => {
 				}}
 				onSubmit={submitEdit}
 			>
-				<label htmlFor="fileInput">
-					<Input
-						type="file"
-						accept="image/*"
-						multiple={false}
-						sx={{ display: "none" }}
-						id="fileInput"
-						onChange={(e) => setNewPfp(e.target.files[0])}
-					></Input>
-					<Button
-						variant="contained"
-						component="span"
-						sx={{ mb: 2.5 }}
-					>
-						Add new avatar
-					</Button>
-				</label>
+				<label htmlFor="fileInput">Add new avatar:</label>
+				<Input
+					type="file"
+					accept="image/*"
+					multiple={false}
+					sx={{ mb: 2, ml: 1 }}
+					id="fileInput"
+					onChange={(e) => setNewPfp(e.target.files[0])}
+				></Input>
+
 				<TextField
 					name="bio"
 					label="New bio"
