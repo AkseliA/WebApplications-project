@@ -40,6 +40,6 @@ Running site can now be accessed in `http://localhost:1234`
 
 ## Other
 
-Further documentation can be found [here](https://linktodocumentation)
+Further documentation can be found [here](https://github.com/AkseliA/WebApplications-project/tree/master/Documentation)
 
-[Project Screenshots](https://linktodocumentation)
+[Project Screenshots](https://github.com/AkseliA/WebApplications-project/tree/master/Documentation/Screenshots)
